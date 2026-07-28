@@ -1,0 +1,16 @@
+PROPRIETARY LICENSE AGREEMENT & ANTI-PIRACY NOTICE
+
+NOTICE: THIS REPOSITORY, SOURCE CODE, DESIGN SYSTEM, AND ALL ASSOCIATED MULTIMEDIA CONTENT ARE PROTECTED UNDER INTERNATIONAL INTELLECTUAL PROPERTY LAWS, DIGITAL COPYRIGHT CONVENTIONS, AND PRIVATE ASSET REGULATIONS.
+
+1. RESTRICTION OF REPRODUCTION AND CAPTURE
+By accessing, viewing, cloning, mirroring, or interacting with this source code, node infrastructure, or any deployed version thereof, you expressly agree to the following mandatory restrictions:
+* UNAUTHORIZED COPYING PROHIBITED: Full or partial duplication, replication, extraction, or republication of this codebase, interface design, text, or binary assets without explicit written authorization from the node administrator is strictly prohibited.
+* SCREEN CAPTURE AND RECORDING RESTRICTION: The capturing of screenshots, screen recordings, video streams, or structural replication of the restricted administrative nodes, secure zones, and transaction workflows is forbidden. 
+
+2. ENFORCEMENT AND DIGITAL WATERMARKING
+This system implements automated integrity checks and telemetry traps. Any unauthorized duplication, scraping, or node mirroring will trigger automated hardware identifier (MAC) and network address (IP) logging, resulting in permanent protocol-level blacklisting and revocation of node access.
+
+3. LEGAL LIABILITY
+Violations of these terms constitute willful copyright infringement and breach of digital access controls. The rights holder reserves the right to pursue full legal remedies, civil damages, and injunctive relief under applicable domestic and international intellectual property legislation.
+
+ALL RIGHTS RESERVED. SECURE NODE GHOST_SHOP.
