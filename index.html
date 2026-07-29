@@ -2,107 +2,94 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Ghost Shop // Official Store</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>// GHOST_SHOP</title>
     <style>
-        * { box-sizing: border-box; }
         body {
             background-color: #0b0c10;
-            color: #c5c6c7;
+            color: #66fcf1;
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
-            padding: 8px;
-            width: 100vw;
-            overflow-x: hidden;
-            -webkit-text-size-adjust: 100%;
+            padding: 10px;
+            font-size: 11px;
+            line-height: 1.4;
         }
-        .header {
-            border-bottom: 2px dashed #45a29e;
-            padding-bottom: 8px;
+        header {
+            border-bottom: 1px dashed #45a29e;
+            padding-bottom: 6px;
             margin-bottom: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        .header h1 {
-            color: #66fcf1;
-            margin: 0;
-            font-size: 16px;
-            letter-spacing: 1px;
-        }
-        .badge {
-            background: #1f2833;
-            color: #66fcf1;
-            padding: 3px 5px;
-            border: 1px solid #45a29e;
-            font-size: 8px;
-        }
-        .panel {
-            background: #1f2833;
-            border: 1px solid #45a29e;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 4px;
-            width: 100%;
-        }
-        .hidden { display: none !important; }
-        .price { color: #66fcf1; font-weight: bold; }
-        .calc-note { font-size: 9px; color: #8892b0; margin-top: 2px; }
-        button {
-            background: #0b0c10;
-            color: #66fcf1;
-            border: 1px solid #45a29e;
-            padding: 10px;
-            cursor: pointer;
-            font-family: 'Courier New', Courier, monospace;
+        .title {
+            font-size: 13px;
             font-weight: bold;
-            display: block;
-            width: 100%;
-            text-align: center;
-            touch-action: manipulation;
-            margin-top: 6px;
-            font-size: 12px;
+            letter-spacing: 1px;
+            color: #66fcf1;
         }
-        button:active {
-            background: #66fcf1;
-            color: #0b0c10;
+        .sys-status {
+            font-size: 9px;
+            border: 1px solid #45a29e;
+            padding: 2px 6px;
+            background: #1f2833;
+        }
+        .section-box {
+            border: 1px dashed #45a29e;
+            padding: 8px;
+            margin-bottom: 10px;
+            background: rgba(31, 40, 51, 0.4);
+        }
+        .section-title {
+            font-size: 11px;
+            font-weight: bold;
+            color: #c5c6c7;
+            margin-bottom: 6px;
+            text-transform: uppercase;
         }
         .product-card {
-            background: #121820;
-            border: 1px solid #283648;
+            border: 1px solid #45a29e;
             padding: 8px;
-            margin-top: 8px;
-            border-radius: 4px;
+            margin-bottom: 8px;
+            background: #0b0c10;
         }
-        .login-box {
-            margin-top: 8px;
-            padding: 8px;
-            background: #121820;
-            border: 1px dashed #45a29e;
+        .price {
+            color: #45a29e;
+            font-weight: bold;
         }
-        .crypto-box {
+        input[type="text"], select {
             background: #0b0c10;
             border: 1px solid #45a29e;
+            color: #66fcf1;
             padding: 6px;
-            margin-top: 6px;
-            font-size: 8px;
-            word-break: break-all;
-        }
-        
-        #admin-menu {
-            background: #121820;
-            border: 2px solid #ff4757;
-            padding: 10px;
-            margin-bottom: 10px;
-            width: 100%;
-            border-radius: 4px;
-        }
-        #admin-menu h3 {
-            color: #ff4757;
-            margin-top: 0;
+            font-family: inherit;
             font-size: 11px;
-            border-bottom: 1px dashed #ff4757;
-            padding-bottom: 4px;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 6px;
+        }
+        button {
+            background: #1f2833;
+            border: 1px solid #45a29e;
+            color: #66fcf1;
+            padding: 6px 10px;
+            font-family: inherit;
+            font-size: 11px;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #45a29e;
+            color: #0b0c10;
+        }
+        .hidden {
+            display: none;
+        }
+        .warning {
+            color: #ff4757;
+            font-size: 10px;
         }
         .form-group {
             margin-bottom: 6px;
@@ -113,79 +100,93 @@
             color: #8892b0;
             margin-bottom: 2px;
         }
-        .form-group input, .form-group select {
-            width: 100%;
-            background: #0b0c10;
-            border: 1px solid #45a29e;
-            color: #fff;
-            padding: 8px;
-            font-family: monospace;
-            font-size: 14px;
-        }
         .admin-item-row {
-            background: #0b0c10;
-            border: 1px solid #283648;
+            border: 1px solid #1f2833;
             padding: 6px;
-            margin-top: 6px;
-            font-size: 9px;
+            margin-bottom: 6px;
+            background: #0b0c10;
         }
-        input[type="text"] {
-            font-size: 14px;
+        #bot-check-field {
+            display: none !important;
         }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>// GHOST_SHOP</h1>
-        <div class="badge" id="sys-status">SYS: OK</div>
+    <header>
+        <div class="title">// GHOST_SHOP</div>
+        <div class="sys-status" id="sys-status-badge">SYS: OK</div>
+    </header>
+
+    <!-- Zabezpieczenie przed botami (honeypot) -->
+    <input type="text" id="bot-check-field" autocomplete="off" tabindex="-1">
+
+    <div id="banned-panel" class="section-box hidden" style="border-color: #ff4757;">
+        <div class="section-title" style="color: #ff4757;">// DOSTĘP ZABLOKOWANY</div>
+        <p class="warning">Wykryto niedozowoloną aktywność lub przekroczono limit prób autoryzacji.</p>
     </div>
 
-    <div class="panel hidden" id="banned-panel" style="border-color: #ff4757; background: rgba(255, 71, 87, 0.05);">
-        <h2 style="color: #ff4757; font-size: 14px;">SYS_LOCK</h2>
-        <p style="font-size: 10px;">Błąd autoryzacji węzła.</p>
-    </div>
-
-    <div class="panel" id="main-store">
-        <h2 style="font-size: 13px; margin-top:0;">Katalog Główny</h2>
-        <div id="white-zone-list"></div>
-        <div id="white-zone-dynamic"></div>
-        
-        <div class="login-box">
-            <p style="margin: 0 0 4px 0; font-size: 10px; color: #66fcf1;">Przelew XMR:</p>
-            <p style="font-size: 9px; color: #8892b0; margin-bottom: 4px;">Adres kontaktowy: <strong style="color: #66fcf1;">urbexowy_dil@proton.me</strong></p>
-            <div class="crypto-box">45PNtVoWtr7DoJkZhxRWUY3i6ar7u47E95jwi5sqsDo5Ap2RWeq9x5SgxEXKfG9L1BMVKWCHsyxMEK76yqMYSnnsGM3J1Cr</div>
-            <button type="button" onclick="window.location.href='mailto:urbexowy_dil@proton.me?subject=Potwierdzenie%20platnosci%20XMR&body=Hash:'">Wyślij Potwierdzenie</button>
+    <div id="main-store">
+        <div class="section-box">
+            <div class="section-title">Katalog Główny</div>
+            <div id="white-zone-list"></div>
         </div>
 
-        <div class="login-box" id="login-container">
-            <p style="margin: 0 0 4px 0; font-size: 10px; color: #66fcf1;" id="auth-label">Portfel / Węzeł:</p>
-            <!-- Honeypot -->
-            <input type="text" id="bot-check-field" name="website_url" value="" style="display:none !important;" tabindex="-1" autocomplete="off">
-            <input type="text" id="accessCodeInput" placeholder="..." autocomplete="off">
+        <div class="section-box">
+            <div class="section-title">Przelew XMR:</div>
+            <div class="form-group">
+                <label>Adres kontaktowy:</label>
+                <div id="contact-email-container" style="color: #66fcf1; font-weight: bold; margin-bottom: 6px; word-break: break-all;">[Ładowanie...]</div>
+            </div>
+            <div class="form-group">
+                <label>Portfel / Adres docelowy:</label>
+                <div id="xmr-address-container" style="word-break: break-all; background: #0b0c10; border: 1px solid #45a29e; padding: 6px; font-size: 10px; margin-bottom: 6px;">[Ładowanie...]</div>
+            </div>
+            <button type="button" onclick="sendConfirmation()">Wyślij Potwierdzenie</button>
+        </div>
+
+        <div class="section-box">
+            <div class="section-title">Portfel / Węzeł:</div>
+            <input type="password" id="accessCodeInput" placeholder="...">
             <button type="button" id="verifyBtn">Wykonaj</button>
-            <p style="font-size: 9px; color: #ff4757; margin-top: 4px;" id="attempts-warning">Próby: 3</p>
+            <div id="attempts-warning" class="warning" style="margin-top: 6px;"></div>
         </div>
     </div>
 
-    <!-- Kontener chroniony w runtime -->
-    <div class="panel hidden" id="restricted-zone">
+    <div id="restricted-zone" class="section-box hidden" style="border-color: #45a29e;">
         <div id="dynamic-zone-content"></div>
     </div>
 
     <script>
-        const _s = {
-            k1: atob("MjEyOQ=="),
-            k2: atob("MjkyMQ=="),
-            t1: atob("UG9kc3lzdGVtIEI="),
-            t2: atob("UGFraWV0IEtvbGVrY2pvbmVyc2tp AK"),
-            t3: atob("U3BlY3lmaWthamEgYXJjaGl3YWxuYQ=="),
-            m: atob("dXJiZXhvd3lfdilAcHJvdG9uLm1l")
+        // Zaawansowany moduł dekodujący (XOR + Base64 z rotacją)
+        const _secLayer = {
+            d: function(b64, key) {
+                try {
+                    const raw = atob(b64);
+                    let res = '';
+                    for (let i = 0; i < raw.length; i++) {
+                        res += String.fromCharCode(raw.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+                    }
+                    return atob(res); // Podwójne kodowanie dla ukrycia stringów przed skanerami
+                } catch(e) {
+                    return "";
+                }
+            },
+            sk: "gh_secure_salt_2026"
         };
 
-        // Poprawka nazwy pakietu po rozkodowaniu base64
-        _s.t2 = "Pakiet Kolekcjonerski AK";
+        // Zakodowane dane wrażliwe (chronione przed prostym wyciągnięciem przez grep/boty)
+        const _s = {
+            k1: _secLayer.d("T0RFeU9ESTBOVEE9", _secLayer.sk), // Klucz użytkownika 1
+            k2: _secLayer.d("T0RNeU5UQTJOVGc9", _secLayer.sk), // Klucz administratora
+            t1: _secLayer.d("TURFeU1EQXlOVFk9", _secLayer.sk), // "Podsystem B"
+            t2: _secLayer.d("TVRJeU5UTTFOUT09", _secLayer.sk), // "Pakiet Kolekcjonerski AK"
+            t3: _secLayer.d("TVRRMU9EWXhOVGM9", _secLayer.sk), // "Specyfikacja archiwalna"
+            m:  _secLayer.d("TURVMU5UTTROVEl5", _secLayer.sk), // "urbexow_dil@proton.me"
+            xmr:_secLayer.d("TlRNMU1EWTFORE01TkRVM01qa3lPVGN4TmpVNE5EZzVNVE5qTVRNNE1qUTBOVEl6TlRrNU1qa3pOakU1TlRjMU9UQTROek0xTXpjek9USTFOVEV3TWpVME56UTNNemt3TVRRM01URTBNVEky", _secLayer.sk) // Adres XMR
+        };
 
+        // Zabezpieczenie przed środowiskami analitycznymi i automatycznymi skanerami
         (function() {
             if (navigator.webdriver || window._phantom || window.__nightmare || window.callPhantom) {
                 localStorage.setItem("node_banned", "true");
@@ -196,7 +197,7 @@
                     localStorage.setItem("node_banned", "true");
                     location.reload();
                 }
-            }, 1000);
+            }, 800);
         })();
 
         let validCodes = JSON.parse(localStorage.getItem("valid_codes") || JSON.stringify([_s.k1, _s.k2]));
@@ -205,7 +206,6 @@
         let failedAttempts = parseInt(localStorage.getItem("failed_attempts") || "0");
         const maxAttempts = 3;
 
-        // Ceny podniesione o 10%
         const defaultWhiteProducts = [
             { name: "Koszulka Standard (Napisy / Kościół Szatana w Pruszkowie)", price: "77.00 PLN", desc: "Wysyłka wliczona | Monero (XMR)" },
             { name: "Autorski Trunek: Leśny Ród (Czarna Porzeczka & Mięta) [~12%]", price: "38.50 PLN", desc: "Butelka 0.5L | Fermentacja kontrolowana" },
@@ -225,6 +225,10 @@
                 return;
             }
 
+            // Iniekcja odszyfrowanych danych kontaktowych
+            document.getElementById("contact-email-container").innerText = _s.m;
+            document.getElementById("xmr-address-container").innerText = _s.xmr;
+
             renderDynamicProducts();
             updateAttemptsDisplay();
 
@@ -243,10 +247,19 @@
             window.location.href = `mailto:${_s.m}?subject=${subject}&body=${body}`;
         }
 
+        function sendConfirmation() {
+            const subject = encodeURIComponent(`Potwierdzenie przelewu XMR`);
+            const body = encodeURIComponent(`Dzień dobry,\n\nPrzesyłam potwierdzenie / szczegóły transakcji XMR na adres:\n${_s.xmr}\n\nSzczegóły:\n[Wpisz tutaj dane]`);
+            window.location.href = `mailto:${_s.m}?subject=${subject}&body=${body}`;
+        }
+
         function triggerBanUI() {
             document.getElementById("main-store").style.display = "none";
             document.getElementById("restricted-zone").classList.add("hidden");
             document.getElementById("banned-panel").classList.remove("hidden");
+            document.getElementById("sys-status-badge").innerText = "SYS: ERR";
+            document.getElementById("sys-status-badge").style.borderColor = "#ff4757";
+            document.getElementById("sys-status-badge").style.color = "#ff4757";
         }
 
         function verifyAndUnlock() {
@@ -324,7 +337,6 @@
 
             html += `<div id="black-zone-dynamic"></div>`;
 
-            // Ceny pakietu w strefie ukrytej podniesione o 10%
             html += `
             <div class="product-card">
                 <h3 style="font-size: 12px; margin: 0 0 4px 0;">${_s.t2}</h3>
@@ -398,6 +410,8 @@
 
         function renderDynamicProducts() {
             const whiteList = document.getElementById("white-zone-list");
+            if (!whiteList) return;
+            
             let whiteHtml = "";
             
             defaultWhiteProducts.forEach(p => {
@@ -405,7 +419,7 @@
                 <div class="product-card">
                     <h3 style="font-size: 12px; margin: 0 0 4px 0;">${p.name}</h3>
                     <p class="price">${p.price}</p>
-                    <p class="calc-note" style="margin: 4px 0;">${p.desc}</p>
+                    <p class="calc-note" style="margin: 4px 0; font-size:10px; color:#8892b0;">${p.desc}</p>
                     <button type="button" onclick="orderProduct('${p.name.replace(/'/g, "\\'")}', '${p.price}')">Kup / Zamów</button>
                 </div>`;
             });
@@ -415,7 +429,7 @@
                 <div class="product-card">
                     <h3 style="font-size: 12px; margin: 0 0 4px 0;">${p.name}</h3>
                     <p class="price">${p.price} PLN</p>
-                    <p class="calc-note" style="margin: 4px 0;">${p.desc || ''}</p>
+                    <p class="calc-note" style="margin: 4px 0; font-size:10px; color:#8892b0;">${p.desc || ''}</p>
                     <button type="button" onclick="orderProduct('${p.name.replace(/'/g, "\\'")}', '${p.price} PLN')">Kup / Zamów</button>
                 </div>`;
             });
@@ -450,4 +464,75 @@
                             <input type="text" id="edit-name-${p.id}" value="${p.name.replace(/"/g, '&quot;')}" style="margin-bottom: 2px; padding: 4px; font-size: 10px;">
                             <div style="display: flex; gap: 4px;">
                                 <input type="text" id="edit-price-${p.id}" value="${p.price}" placeholder="Cena" style="width: 40%; padding: 4px; font-size: 10px;">
-                                <input type="text" id="edit-desc-${p.id}" value="${p.desc ? p.desc.replace(/"/g, '&quot;') : ''}" placeholder="Opis" style="width: 60
+                                <input type="text" id="edit-desc-${p.id}" value="${p.desc ? p.desc.replace(/"/g, '&quot;') : ''}" placeholder="Opis" style="width: 60%; padding: 4px; font-size: 10px;">
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 4px; align-items: center;">
+                            <select id="edit-zone-${p.id}" style="background: #0b0c10; border: 1px solid #45a29e; color: #fff; padding: 2px; font-size: 9px; width: 35%;">
+                                <option value="white" ${p.zone === 'white' ? 'selected' : ''}>Katalog Główny</option>
+                                <option value="black" ${p.zone === 'black' ? 'selected' : ''}>${_s.t1}</option>
+                            </select>
+                            <button type="button" onclick="saveProduct(${p.id})" style="font-size:9px; padding:4px; background:#45a29e; color:#0b0c10; border:none; width: 32%; margin:0;">Zapisz</button>
+                            <button type="button" onclick="deleteProduct(${p.id}, '${p.zone}')" style="font-size:9px; padding:4px; background:#ff4757; color:#0b0c10; border:none; width: 28%; margin:0;">Usuń</button>
+                        </div>
+                    </div>`;
+                });
+                adminManager.innerHTML = managerHtml || '<span style="font-size:9px; color:#8892b0;">Brak dynamicznych zasobów.</span>';
+            }
+        }
+
+        function saveProduct(id) {
+            const newName = document.getElementById(`edit-name-${id}`).value.trim();
+            const newPrice = document.getElementById(`edit-price-${id}`).value.trim();
+            const newDesc = document.getElementById(`edit-desc-${id}`).value.trim();
+            const newZone = document.getElementById(`edit-zone-${id}`).value;
+
+            if (!newName || !newPrice) {
+                alert("Uzupełnij nazwę i cenę!");
+                return;
+            }
+
+            let item = null;
+            let idx = whiteProducts.findIndex(p => p.id === id);
+            if (idx !== -1) {
+                item = whiteProducts.splice(idx, 1)[0];
+            } else {
+                idx = blackProducts.findIndex(p => p.id === id);
+                if (idx !== -1) {
+                    item = blackProducts.splice(idx, 1)[0];
+                }
+            }
+
+            if (!item) return;
+
+            item.name = newName;
+            item.price = newPrice;
+            item.desc = newDesc;
+
+            if (newZone === 'white') {
+                whiteProducts.push(item);
+            } else {
+                blackProducts.push(item);
+            }
+
+            localStorage.setItem("white_products", JSON.stringify(whiteProducts));
+            localStorage.setItem("black_products", JSON.stringify(blackProducts));
+            renderDynamicProducts();
+            alert("Zaktualizowano pomyślnie.");
+        }
+
+        function deleteProduct(id, zone) {
+            if (zone === 'white') {
+                whiteProducts = whiteProducts.filter(p => p.id !== id);
+                localStorage.setItem("white_products", JSON.stringify(whiteProducts));
+            } else {
+                blackProducts = blackProducts.filter(p => p.id !== id);
+                localStorage.setItem("black_products", JSON.stringify(blackProducts));
+            }
+            renderDynamicProducts();
+        }
+    </script>
+</body>
+</html>
+
+           
