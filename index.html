@@ -75,20 +75,6 @@
             margin-top: 15px;
             border-radius: 4px;
         }
-        .specs-table {
-            width: 100%;
-            margin-top: 10px;
-            border-collapse: collapse;
-            font-size: 12px;
-        }
-        .specs-table td {
-            padding: 6px;
-            border-bottom: 1px solid #283648;
-        }
-        .specs-table td:first-child {
-            color: #8892b0;
-            width: 40%;
-        }
         .crypto-box {
             background: #0b0c10;
             border: 1px solid #45a29e;
@@ -189,10 +175,11 @@
     </div>
 
     <div class="panel" id="main-store">
-        <h2>Main Inventory // Biała Strefa (Koszulki)</h2>
+        <h2>Main Inventory // Biała Strefa (Koszulki i Wyroby)</h2>
         <ul id="white-zone-list">
             <li>Koszulka Standard (Napisy / Kościół Szatana w Pruszkowie) – <span class="price">70.00 PLN</span> <div class="calc-note">Wysyłka wliczona | Monero (XMR)</div></li>
         </ul>
+        <div id="white-zone-dynamic"></div>
         <hr style="border: 0; border-top: 1px solid #45a29e; margin: 15px 0;">
         
         <div class="login-box">
@@ -251,6 +238,14 @@
             <div style="margin-top: 15px;">
                 <button onclick="simulateTransactionRestricted()">Zamów / Przelej na portfel</button>
             </div>
+            
+            <div style="margin-top: 10px;">
+                <label style="font-size: 11px; color: #8892b0;">Zmień strefę produktu:</label>
+                <select onchange="moveStaticProduct(this.value)" style="background: #0b0c10; border: 1px solid #45a29e; color: #fff; padding: 4px; font-size: 11px; width: 100%;">
+                    <option value="black" selected>Czarna Strefa (Ukryta)</option>
+                    <option value="white">Biała Strefa (Główna)</option>
+                </select>
+            </div>
         </div>
 
         <br>
@@ -260,6 +255,209 @@
     <script>
         let validCodes = JSON.parse(localStorage.getItem("valid_codes") || '["2129", "2921"]');
         let whiteProducts = JSON.parse(localStorage.getItem("white_products") || '[]');
+        let blackProducts = JSON.parse(localStorage.getItem("black_products") || '[]');
+        let staticProductZone = localStorage.getItem("static_product_zone") || 'black';
+        let failedAttempts = parseInt(localStorage.getItem("failed_attempts") || "0");
+        const maxAttempts = 3;
+
+        window.onload = function() {
+            if (localStorage.getItem("node_banned") === "true") {
+                triggerBanUI();
+                return;
+            }
+            if (localStorage.getItem("sec_access") === "true") {
+                document.getElementById("restricted-zone").classList.remove("hidden");
+            }
+            renderDynamicProducts();
+            applyStaticProductZone();
+            updateAttemptsDisplay();
+        };
+
+        function triggerBanUI() {
+            document.getElementById("main-store").style.display = "none";
+            document.getElementById("restricted-zone").classList.add("hidden");
+            document.getElementById("admin-menu").classList.add("hidden");
+            document.getElementById("banned-panel").classList.remove("hidden");
+            document.getElementById("ban-details").innerHTML = "Zablokowany IP: [185.220.101.5] | MAC: [00:1a:2b:4c:5d:6e]";
+        }
+
+        function verifyAndUnlock() {
+            if (localStorage.getItem("node_banned") === "true") return;
+            const inputVal = document.getElementById("accessCodeInput").value.trim();
+            
+            if (inputVal === "2921") {
+                localStorage.setItem("sec_access", "true");
+                localStorage.setItem("failed_attempts", "0");
+                document.getElementById("restricted-zone").classList.remove("hidden");
+                document.getElementById("admin-menu").classList.remove("hidden");
+                alert("KOD 2921: Admin Menu aktywowane w lewym górnym rogu.");
+                return;
+            }
+
+            if (validCodes.includes(inputVal)) {
+                localStorage.setItem("sec_access", "true");
+                localStorage.setItem("failed_attempts", "0");
+                document.getElementById("restricted-zone").classList.remove("hidden");
+                alert("Autoryzacja pomyślna.");
+            } else {
+                failedAttempts++;
+                localStorage.setItem("failed_attempts", failedAttempts);
+                if (failedAttempts >= maxAttempts) {
+                    localStorage.setItem("node_banned", "true");
+                    triggerBanUI();
+                    alert("Zbyt dużo prób. Nałożono blokadę.");
+                } else {
+                    alert("Nieprawidłowy kod. Pozostałe próby: " + (maxAttempts - failedAttempts));
+                    updateAttemptsDisplay();
+                }
+            }
+        }
+
+        function updateAttemptsDisplay() {
+            let remaining = maxAttempts - failedAttempts;
+            if (remaining < 0) remaining = 0;
+            document.getElementById("attempts-warning").innerText = "Pozostałe próby: " + remaining;
+        }
+
+        function lockZone() {
+            localStorage.removeItem("sec_access");
+            document.getElementById("restricted-zone").classList.add("hidden");
+            document.getElementById("admin-menu").classList.add("hidden");
+            document.getElementById("accessCodeInput").value = "";
+        }
+
+        function closeAdminMenu() {
+            document.getElementById("admin-menu").classList.add("hidden");
+        }
+
+        function adminAddProduct() {
+            const zone = document.getElementById("adm-zone").value;
+            const name = document.getElementById("adm-name").value.trim();
+            const price = document.getElementById("adm-price").value.trim();
+            const desc = document.getElementById("adm-desc").value.trim();
+
+            if (!name || !price) {
+                alert("Podaj nazwę i cenę!");
+                return;
+            }
+
+            const item = { id: Date.now(), name, price, desc };
+            if (zone === "white") {
+                whiteProducts.push(item);
+                localStorage.setItem("white_products", JSON.stringify(whiteProducts));
+            } else {
+                blackProducts.push(item);
+                localStorage.setItem("black_products", JSON.stringify(blackProducts));
+            }
+            renderDynamicProducts();
+            alert("Dodano pomyślnie do strefy: " + (zone === "white" ? "Biała" : "Czarna"));
+        }
+
+        function adminAddCode() {
+            const newCode = document.getElementById("adm-new-code").value.trim();
+            if (!newCode) return;
+            if (!validCodes.includes(newCode)) {
+                validCodes.push(newCode);
+                localStorage.setItem("valid_codes", JSON.stringify(validCodes));
+                alert("Dodano nowy kod!");
+            }
+        }
+
+        function renderDynamicProducts() {
+            const whiteList = document.getElementById("white-zone-list");
+            let whiteHtml = `<li>Koszulka Standard (Napisy / Kościół Szatana w Pruszkowie) – <span class="price">70.00 PLN</span> <div class="calc-note">Wysyłka wliczona | Monero (XMR)</div></li>`;
+            
+            whiteProducts.forEach(p => {
+                whiteHtml += `
+                <li id="prod-${p.id}">
+                    ${p.name} – <span class="price">${p.price}</span> 
+                    <div class="calc-note">${p.desc || 'Biała Strefa'}</div>
+                    <div style="margin-top:5px;">
+                        <select onchange="moveDynamicProduct(${p.id}, this.value)" style="background: #0b0c10; border: 1px solid #45a29e; color: #fff; padding: 2px; font-size: 10px;">
+                            <option value="white" selected>Biała Strefa</option>
+                            <option value="black">Czarna Strefa</option>
+                        </select>
+                        <button onclick="deleteProduct(${p.id}, 'white')" style="font-size:9px; padding:2px 5px; margin-left:5px; background:#ff4757; color:#0b0c10; border:none;">Usuń</button>
+                    </div>
+                </li>`;
+            });
+            whiteList.innerHTML = whiteHtml;
+
+            const blackContainer = document.getElementById("black-zone-dynamic");
+            let blackHtml = "";
+            blackProducts.forEach(p => {
+                blackHtml += `
+                <div class="product-card" id="prod-${p.id}">
+                    <h3>${p.name}</h3>
+                    <p class="price">${p.price}</p>
+                    <p style="font-size: 11px; color: #8892b0;">${p.desc || 'Czarna Strefa'}</p>
+                    <div style="margin-top:10px;">
+                        <label style="font-size: 10px; color: #8892b0;">Zmień strefę:</label>
+                        <select onchange="moveDynamicProduct(${p.id}, this.value)" style="background: #0b0c10; border: 1px solid #45a29e; color: #fff; padding: 4px; font-size: 11px; width: 100%;">
+                            <option value="black" selected>Czarna Strefa (Ukryta)</option>
+                            <option value="white">Biała Strefa (Główna)</option>
+                        </select>
+                    </div>
+                    <button onclick="simulateTransactionRestricted()" style="margin-top:10px;">Zamów</button>
+                    <button onclick="deleteProduct(${p.id}, 'black')" style="margin-top:5px; font-size:10px; background:#ff4757; color:#0b0c10; border:none;">Usuń produkt</button>
+                </div>`;
+            });
+            blackContainer.innerHTML = blackHtml;
+        }
+
+        function moveDynamicProduct(id, targetZone) {
+            let item = null;
+            let sourceList = '';
+
+            // Szukanie w białych
+            let idx = whiteProducts.findIndex(p => p.id === id);
+            if (idx !== -1) {
+                item = whiteProducts.splice(idx, 1)[0];
+                sourceList = 'white';
+            } else {
+                // Szukanie w czarnych
+                idx = blackProducts.findIndex(p => p.id === id);
+                if (idx !== -1) {
+                    item = blackProducts.splice(idx, 1)[0];
+                    sourceList = 'black';
+                }
+            }
+
+            if (!item) return;
+
+            if (targetZone === 'white') {
+                whiteProducts.push(item);
+            } else {
+                blackProducts.push(item);
+            }
+
+            localStorage.setItem("white_products", JSON.stringify(whiteProducts));
+            localStorage.setItem("black_products", JSON.stringify(blackProducts));
+            renderDynamicProducts();
+            alert("Produkt został pomyślnie przeniesiony do strefy: " + (targetZone === 'white' ? 'Biała Strefa' : 'Czarna Strefa'));
+        }
+
+        function deleteProduct(id, zone) {
+            if (zone === 'white') {
+                whiteProducts = whiteProducts.filter(p => p.id !== id);
+                localStorage.setItem("white_products", JSON.stringify(whiteProducts));
+            } else {
+                blackProducts = blackProducts.filter(p => p.id !== id);
+                localStorage.setItem("black_products", JSON.stringify(blackProducts));
+            }
+            renderDynamicProducts();
+        }
+
+        function moveStaticProduct(targetZone) {
+            staticProductZone = targetZone;
+            localStorage.setItem("static_product_zone", targetZone);
+            applyStaticProductZone();
+            alert("Strefa nasion (AK) została zmieniona na: " + (targetZone === 'white' ? 'Biała Strefa' : 'Czarna Strefa'));
+        }
+
+        function applyStaticProductZone() {
+            const productCard = document.querySelector("#restricted-zone .product-card");
+            const whiteDynamicContainer = document.getElementById("e.getItem("white_products") || '[]');
         let blackProducts = JSON.parse(localStorage.getItem("black_products") || '[]');
         let failedAttempts = parseInt(localStorage.getItem("failed_attempts") || "0");
         const maxAttempts = 3;
