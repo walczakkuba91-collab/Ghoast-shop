@@ -51,7 +51,7 @@
         button {
             background: #0b0c10;
             color: #66fcf1;
-            border: 1px solid #66fcf1;
+            border: 1px solid #45a29e;
             padding: 10px;
             cursor: pointer;
             font-family: 'Courier New', Courier, monospace;
@@ -67,20 +67,18 @@
             background: #66fcf1;
             color: #0b0c10;
         }
-        ul { padding-left: 12px; margin: 4px 0; }
-        li { margin-bottom: 8px; line-height: 1.2; font-size: 11px; word-break: break-word; }
-        .login-box {
-            margin-top: 8px;
-            padding: 8px;
-            background: #121820;
-            border: 1px dashed #45a29e;
-        }
         .product-card {
             background: #121820;
             border: 1px solid #283648;
             padding: 8px;
             margin-top: 8px;
             border-radius: 4px;
+        }
+        .login-box {
+            margin-top: 8px;
+            padding: 8px;
+            background: #121820;
+            border: 1px dashed #45a29e;
         }
         .crypto-box {
             background: #0b0c10;
@@ -152,17 +150,7 @@
     <!-- GŁÓWNA STRONA / BIAŁA STREFA -->
     <div class="panel" id="main-store">
         <h2 style="font-size: 13px; margin-top:0;">Biała Strefa (Główna)</h2>
-        <ul id="white-zone-list">
-            <li>Koszulka Standard (Napisy / Kościół Szatana w Pruszkowie) – <span class="price">70.00 PLN</span> <div class="calc-note">Wysyłka wliczona | Monero (XMR)</div></li>
-            <li>Autorski Trunek: Leśny Ród (Czarna Porzeczka & Mięta) [~12%] – <span class="price">35.00 PLN</span> <div class="calc-note">Butelka 0.5L | Fermentacja kontrolowana</div></li>
-            <li>Autorski Trunek: Bursztyn Pruszkowski (Jabłko & Cynamon) [~12%] – <span class="price">35.00 PLN</span> <div class="calc-note">Butelka 0.5L | Aromat korzenny</div></li>
-            <li>Autorski Trunek: Betonowy Sad (Gruszka & Wanilia) [~12%] – <span class="price">35.00 PLN</span> <div class="calc-note">Butelka 0.5L | Profil gładki</div></li>
-            <!-- Dodane pozycje z Czarnej Strefy z dopisanym procentem do Białej Strefy -->
-            <li>Agrestowy Light [~12-14%] – <span class="price">15.00 PLN</span> <div class="calc-note">Flaszka | Rześki, konkretnie kwaśny profil z naturalnego agrestu</div></li>
-            <li>Wiśniowa Lekkość [~12-14%] – <span class="price">15.00 PLN</span> <div class="calc-note">Flaszka | Głęboki, naturalny smak dojrzałej wiśni</div></li>
-            <li>Czarna Porzeczka [~12-14%] – <span class="price">15.00 PLN</span> <div class="calc-note">Flaszka | Wyrazisty, ciemny trunek z czarnej porzeczki</div></li>
-            <li>Cytrynowe Żylety [~12-14%] – <span class="price">15.00 PLN</span> <div class="calc-note">Flaszka | Orzeźwiająca bomba cytrusowa</div></li>
-        </ul>
+        <div id="white-zone-list"></div>
         <div id="white-zone-dynamic"></div>
         
         <div class="login-box">
@@ -236,11 +224,11 @@
                 <img src="ak47_1421.jpg" alt="AK-47" style="max-width: 100%; height: auto; border: 1px solid #45a29e;">
             </div>
 
-            <ul>
-                <li>1 szt. – <span class="price">25.00 zł</span></li>
-                <li>3+1 szt. – <span class="price">59.00 zł</span></li>
-                <li>5+2 szt. – <span class="price">79.00 zł</span></li>
-                <li>10+4 szt. – <span class="price">139.00 zł</span></li>
+            <ul style="padding-left: 12px; margin: 4px 0;">
+                <li style="font-size: 11px; margin-bottom: 4px;">1 szt. – <span class="price">25.00 zł</span></li>
+                <li style="font-size: 11px; margin-bottom: 4px;">3+1 szt. – <span class="price">59.00 zł</span></li>
+                <li style="font-size: 11px; margin-bottom: 4px;">5+2 szt. – <span class="price">79.00 zł</span></li>
+                <li style="font-size: 11px; margin-bottom: 4px;">10+4 szt. – <span class="price">139.00 zł</span></li>
             </ul>
             <button type="button" onclick="alert('Zamówienie ze strefy ukrytej. Wyślij potwierdzenie na: urbexowy_dil@proton.me')">Zamów</button>
         </div>
@@ -254,6 +242,18 @@
         let blackProducts = JSON.parse(localStorage.getItem("black_products") || '[]');
         let failedAttempts = parseInt(localStorage.getItem("failed_attempts") || "0");
         const maxAttempts = 3;
+
+        // Statyczne produkty w białej strefie jako karty z przyciskami zakupu
+        const defaultWhiteProducts = [
+            { name: "Koszulka Standard (Napisy / Kościół Szatana w Pruszkowie)", price: "70.00 PLN", desc: "Wysyłka wliczona | Monero (XMR)" },
+            { name: "Autorski Trunek: Leśny Ród (Czarna Porzeczka & Mięta) [~12%]", price: "35.00 PLN", desc: "Butelka 0.5L | Fermentacja kontrolowana" },
+            { name: "Autorski Trunek: Bursztyn Pruszkowski (Jabłko & Cynamon) [~12%]", price: "35.00 PLN", desc: "Butelka 0.5L | Aromat korzenny" },
+            { name: "Autorski Trunek: Betonowy Sad (Gruszka & Wanilia) [~12%]", price: "35.00 PLN", desc: "Butelka 0.5L | Profil gładki" },
+            { name: "Agrestowy Light [~12-14%]", price: "15.00 PLN", desc: "Flaszka | Rześki, konkretnie kwaśny profil z naturalnego agrestu" },
+            { name: "Wiśniowa Lekkość [~12-14%]", price: "15.00 PLN", desc: "Flaszka | Głęboki, naturalny smak dojrzałej wiśni" },
+            { name: "Czarna Porzeczka [~12-14%]", price: "15.00 PLN", desc: "Flaszka | Wyrazisty, ciemny trunek z czarnej porzeczki" },
+            { name: "Cytrynowe Żylety [~12-14%]", price: "15.00 PLN", desc: "Flaszka | Orzeźwiająca bomba cytrusowa" }
+        ];
 
         window.addEventListener('DOMContentLoaded', () => {
             localStorage.removeItem("sec_access");
@@ -358,22 +358,32 @@
 
         function renderDynamicProducts() {
             const whiteList = document.getElementById("white-zone-list");
-            let whiteHtml = `
-                <li>Koszulka Standard (Napisy / Kościół Szatana w Pruszkowie) – <span class="price">70.00 PLN</span> <div class="calc-note">Wysyłka wliczona | Monero (XMR)</div></li>
-                <li>Autorski Trunek: Leśny Ród (Czarna Porzeczka & Mięta) [~12%] – <span class="price">35.00 PLN</span> <div class="calc-note">Butelka 0.5L | Fermentacja kontrolowana</div></li>
-                <li>Autorski Trunek: Bursztyn Pruszkowski (Jabłko & Cynamon) [~12%] – <span class="price">35.00 PLN</span> <div class="calc-note">Butelka 0.5L | Aromat korzenny</div></li>
-                <li>Autorski Trunek: Betonowy Sad (Gruszka & Wanilia) [~12%] – <span class="price">35.00 PLN</span> <div class="calc-note">Butelka 0.5L | Profil gładki</div></li>
-                <li>Agrestowy Light [~12-14%] – <span class="price">15.00 PLN</span> <div class="calc-note">Flaszka | Rześki, konkretnie kwaśny profil z naturalnego agrestu</div></li>
-                <li>Wiśniowa Lekkość [~12-14%] – <span class="price">15.00 PLN</span> <div class="calc-note">Flaszka | Głęboki, naturalny smak dojrzałej wiśni</div></li>
-                <li>Czarna Porzeczka [~12-14%] – <span class="price">15.00 PLN</span> <div class="calc-note">Flaszka | Wyrazisty, ciemny trunek z czarnej porzeczki</div></li>
-                <li>Cytrynowe Żylety [~12-14%] – <span class="price">15.00 PLN</span> <div class="calc-note">Flaszka | Orzeźwiająca bomba cytrusowa</div></li>
-            `;
+            let whiteHtml = "";
             
+            // Renderowanie domyślnych produktów białej strefy w formie kart z przyciskami
+            defaultWhiteProducts.forEach(p => {
+                whiteHtml += `
+                <div class="product-card">
+                    <h3 style="font-size: 12px; margin: 0 0 4px 0;">${p.name}</h3>
+                    <p class="price">${p.price}</p>
+                    <p class="calc-note" style="margin: 4px 0;">${p.desc}</p>
+                    <button type="button" onclick="alert('Zamówienie (${p.name}). Wyślij potwierdzenie na: urbexowy_dil@proton.me')">Kup / Zamów</button>
+                </div>`;
+            });
+
+            // Renderowanie produktów dodanych dynamicznie do białej strefy przez admina
             whiteProducts.forEach(p => {
-                whiteHtml += `<li>${p.name} – <span class="price">${p.price}</span><div class="calc-note">${p.desc || ''}</div></li>`;
+                whiteHtml += `
+                <div class="product-card">
+                    <h3 style="font-size: 12px; margin: 0 0 4px 0;">${p.name}</h3>
+                    <p class="price">${p.price}</p>
+                    <p class="calc-note" style="margin: 4px 0;">${p.desc || ''}</p>
+                    <button type="button" onclick="alert('Zamówienie (${p.name}). Wyślij potwierdzenie na: urbexowy_dil@proton.me')">Kup / Zamów</button>
+                </div>`;
             });
             whiteList.innerHTML = whiteHtml;
 
+            // Renderowanie czarnej strefy
             const blackContainer = document.getElementById("black-zone-dynamic");
             let blackHtml = "";
             blackProducts.forEach(p => {
@@ -382,11 +392,12 @@
                     <h3 style="font-size: 12px; margin: 0 0 4px 0;">${p.name}</h3>
                     <p class="price">${p.price}</p>
                     <p style="font-size: 9px; color: #8892b0; margin: 0 0 6px 0;">${p.desc || ''}</p>
-                    <button type="button" onclick="alert('Zamówienie ze strefy ukrytej. Wyślij potwierdzenie na: urbexowy_dil@proton.me')">Zamów</button>
+                    <button type="button" onclick="alert('Zamówienie ze strefy ukrytej (${p.name}). Wyślij potwierdzenie na: urbexowy_dil@proton.me')">Zamów</button>
                 </div>`;
             });
             blackContainer.innerHTML = blackHtml;
 
+            // Panel zarządzania produktami w adminie
             const adminManager = document.getElementById("admin-products-manager");
             let managerHtml = "";
             
@@ -407,7 +418,7 @@
                     </div>
                 </div>`;
             });
-            adminManager.innerHTML = managerHtml || '<span style="font-size:9px; color:#8892b0;">Brak produktów.</span>';
+            adminManager.innerHTML = managerHtml || '<span style="font-size:9px; color:#8892b0;">Brak dynamicznych produktów.</span>';
         }
 
         function moveProduct(id, targetZone) {
@@ -436,4 +447,11 @@
                 whiteProducts = whiteProducts.filter(p => p.id !== id);
                 localStorage.setItem("white_products", JSON.stringify(whiteProducts));
             } else {
-                blackProducts = blackProducts.filter(p => p.id !== i
+                blackProducts = blackProducts.filter(p => p.id !== id);
+                localStorage.setItem("black_products", JSON.stringify(blackProducts));
+            }
+            renderDynamicProducts();
+        }
+    </script>
+</body>
+</html>
