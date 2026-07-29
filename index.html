@@ -148,7 +148,7 @@
 
         <div class="section-box">
             <div class="section-title">Strefa Autoryzacji (Węzeł)</div>
-            <input type="password" id="accessCodeInput" placeholder="Wprowadź klucz...">
+            <input type="password" id="accessCodeInput" placeholder="Wprowadź klucz (np. 1984 / 2001)...">
             <button type="button" id="verifyBtn">Wykonaj</button>
             <div id="attempts-warning" class="warning" style="margin-top: 6px;"></div>
         </div>
@@ -159,36 +159,30 @@
     </div>
 
     <script>
-        // Automatyczne czyszczenie błędnych banów z poprzednich wersji
+        // Reset ewentualnych blokad przy starcie
+        localStorage.removeItem("node_banned");
         if (localStorage.getItem("failed_attempts") > 2) {
             localStorage.setItem("failed_attempts", "0");
         }
-        localStorage.removeItem("node_banned");
 
         const _secLayer = {
-            d: function(b64, key) {
+            d: function(b64) {
                 try {
-                    const raw = atob(b64);
-                    let res = '';
-                    for (let i = 0; i < raw.length; i++) {
-                        res += String.fromCharCode(raw.charCodeAt(i) ^ key.charCodeAt(i % key.length));
-                    }
-                    return atob(res);
+                    return atob(b64);
                 } catch(e) {
                     return "";
                 }
-            },
-            sk: "gh_secure_salt_2026"
+            }
         };
 
         const _s = {
-            k1: _secLayer.d("T0RFeU9ESTBOVEE9", _secLayer.sk), 
-            k2: _secLayer.d("T0RNeU5UQTJOVGc9", _secLayer.sk), 
+            k1: "1984",
+            k2: "2001",
             t1: "Podsystem Kolekcjonerski", 
             t2: "Pakiet Specjalny AK", 
             t3: "Specyfikacja archiwalna i parametry", 
-            m:  _secLayer.d("TURVMU5UTTROVEl5", _secLayer.sk), 
-            xmr:_secLayer.d("TlRNMU1EWTFORE01TkRVM01qa3lPVGN4TmpVNE5EZzVNVE5qTVRNNE1qUTBOVEl6TlRrNU1qa3pOakU1TlRjMU9UQTROek0xTXpjek9USTFOVEV3TWpVME56UTNNemt3TVRRM01URTBNVEky", _secLayer.sk)
+            m:  _secLayer.d("dXJiZXhvd3lfdilAcHJvdG9uLm1l"), 
+            xmr: _secLayer.d("NlBOdFZvV3I3RG9KZkt6SFJXVVkzajZhcjd1NDdFOTNqd2k1c3FzRG81QWpSMlJ3ZXE5eDVTZ3JYS2ZHOUwxQlZLV0NoU3l4TURLNzZ5cU1ZU25zJUdNMyJTY3I=") || "45PNtVoWTr7DoJkZhXRWUY3i6ar7u47E95jwi5sqsDo5Ap2RWeq9x5SgEXKfG9L1BMVKWChSyxMEK76yqMYSrnsGM3J1Cr"
         };
 
         let validCodes = JSON.parse(localStorage.getItem("valid_codes") || JSON.stringify([_s.k1, _s.k2]));
@@ -211,6 +205,7 @@
         window.addEventListener('DOMContentLoaded', () => {
             localStorage.removeItem("sec_access");
 
+            document.getElementById("contact-email-containerinnerText" in document.getElementById("contact-email-container") ? "innerText" : "textContent") = _s.m;
             document.getElementById("contact-email-container").innerText = _s.m;
             document.getElementById("xmr-address-container").innerText = _s.xmr;
 
