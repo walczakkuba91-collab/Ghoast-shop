@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+
+ <!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
@@ -210,10 +211,10 @@
             <button type="button" onclick="sendConfirmation()">Wyślij Potwierdzenie</button>
         </div>
 
-        <div class="section-box">
+        <div class="section-box" id="auth-section-box">
             <div class="section-title">Strefa Autoryzacji (Węzeł)</div>
             <div class="form-group">
-                <input type="password" id="accessCodeInput" placeholder="Wprowadź klucz (np. 1984 / 2001)...">
+                <input type="password" id="accessCodeInput" placeholder="Wprowadź klucz...">
             </div>
             <button type="button" id="verifyBtn">Wykonaj</button>
             <div id="attempts-warning" class="warning" style="margin-top: 8px;"></div>
@@ -225,19 +226,15 @@
     </div>
 
     <script>
-        // Bezpieczny rozruch i czyszczenie błędnych stanów z localStorage
         try {
             if (localStorage.getItem("node_banned") === "true") {
-                // Jeśli użytkownik był zbanowany, ale minął sesyjny stan, zabezpieczamy stabilność
                 let attempts = parseInt(localStorage.getItem("failed_attempts") || "0");
                 if (isNaN(attempts) || attempts > 3) {
                     localStorage.removeItem("node_banned");
                     localStorage.setItem("failed_attempts", "0");
                 }
             }
-        } catch(e) {
-            console.error("Storage error:", e);
-        }
+        } catch(e) {}
 
         const _secLayer = {
             d: function(b64) {
@@ -255,7 +252,7 @@
             t1: "Podsystem Kolekcjonerski", 
             t2: "Pakiet Specjalny AK", 
             t3: "Specyfikacja archiwalna i parametry", 
-            m:  _secLayer.d("dXJiZXhvd3lfdilAcHJvdG9uLm1l"), 
+            m:  "urbexowy_dil@proton.me", 
             xmr: _secLayer.d("NlBOdFZvV3I3RG9KZkt6SFJXVVkzajZhcjd1NDdFOTNqd2k1c3FzRG81QWpSMlJ3ZXE5eDVTZ3JYS2ZHOUwxQlZLV0NoU3l4TURLNzZ5cU1ZU25zJUdNMyJTY3I=") || "45PNtVoWTr7DoJkZhXRWUY3i6ar7u47E95jwi5sqsDo5Ap2RWeq9x5SgEXKfG9L1BMVKWChSyxMEK76yqMYSrnsGM3J1Cr"
         };
 
@@ -286,17 +283,22 @@
             { name: "Agrestowy Light [~12-14%]", price: "16.50 PLN", desc: "Flaszka | Rześki, konkretnie kwaśny profil z naturalnego agrestu" },
             { name: "Wiśniowa Lekkość [~12-14%]", price: "16.50 PLN", desc: "Flaszka | Głęboki, naturalny smak dojrzałej wiśni" },
             { name: "Czarna Porzeczka [~12-14%]", price: "16.50 PLN", desc: "Flaszka | Wyrazisty, ciemny trunek z czarnej porzeczki" },
-            { name: "Cytrynone Żylety [~12-14%]", price: "16.50 PLN", desc: "Flaszka | Orzeźwiająca bomba cytrusowa" }
+            { name: "Cytrynowe Żylety [~12-14%]", price: "16.50 PLN", desc: "Flaszka | Orzeźwiająca bomba cytrusowa" }
         ];
 
         window.addEventListener('DOMContentLoaded', () => {
-            // Sprawdzenie stanu blokady przy wejściu
             if (localStorage.getItem("node_banned") === "true") {
                 const mainStore = document.getElementById("main-store");
                 if (mainStore) mainStore.style.display = "none";
                 const bannedPanel = document.getElementById("banned-panel");
                 if (bannedPanel) bannedPanel.classList.remove("hidden");
                 return;
+            }
+
+            // Jeśli strefa była autoryzowana w tej sesji lub zapamiętana, od razu ukrywamy sekcję autoryzacji
+            if (localStorage.getItem("sec_access") === "true") {
+                const authBox = document.getElementById("auth-section-box");
+                if (authBox) authBox.classList.add("hidden");
             }
 
             const emailContainer = document.getElementById("contact-email-container");
@@ -363,6 +365,10 @@
                     localStorage.setItem("failed_attempts", "0");
                 } catch(e) {}
                 
+                // Ukrywamy pole wprowadzania kodu po poprawnej autoryzacji
+                const authBox = document.getElementById("auth-section-box");
+                if (authBox) authBox.classList.add("hidden");
+
                 buildRestrictedZone(val === _s.k2);
                 
                 const restrictedZone = document.getElementById("restricted-zone");
@@ -468,8 +474,11 @@
                 localStorage.removeItem("sec_access");
             } catch(e) {}
             const restrictedZone = document.getElementById("restricted-zone");
+            const authBox = document.getElementById("auth-section-box");
             const accessInput = document.getElementById("accessCodeInput");
+            
             if (restrictedZone) restrictedZone.classList.add("hidden");
+            if (authBox) authBox.classList.remove("hidden");
             if (accessInput) accessInput.value = "";
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -657,3 +666,4 @@
     </script>
 </body>
 </html>
+     
