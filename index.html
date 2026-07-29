@@ -1,5 +1,4 @@
-
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
@@ -183,7 +182,6 @@
         <div class="sys-status" id="sys-status-badge">SYS: ONLINE</div>
     </header>
 
-    <!-- Honeypot -->
     <input type="text" id="bot-check-field" autocomplete="off" tabindex="-1">
 
     <div id="banned-panel" class="section-box hidden" style="border-color: var(--accent-red);">
@@ -212,7 +210,7 @@
         </div>
 
         <div class="section-box" id="auth-section-box">
-            <div class="section-title">Strefa Autoryzacji (Węzeł)</div>
+            <div class="section-title" id="auth-section-title">Strefa Autoryzacji (Węzeł)</div>
             <div class="form-group">
                 <input type="password" id="accessCodeInput" placeholder="Wprowadź klucz...">
             </div>
@@ -295,12 +293,6 @@
                 return;
             }
 
-            // Jeśli strefa była autoryzowana w tej sesji lub zapamiętana, od razu ukrywamy sekcję autoryzacji
-            if (localStorage.getItem("sec_access") === "true") {
-                const authBox = document.getElementById("auth-section-box");
-                if (authBox) authBox.classList.add("hidden");
-            }
-
             const emailContainer = document.getElementById("contact-email-container");
             const xmrContainer = document.getElementById("xmr-address-container");
             
@@ -365,10 +357,6 @@
                     localStorage.setItem("failed_attempts", "0");
                 } catch(e) {}
                 
-                // Ukrywamy pole wprowadzania kodu po poprawnej autoryzacji
-                const authBox = document.getElementById("auth-section-box");
-                if (authBox) authBox.classList.add("hidden");
-
                 buildRestrictedZone(val === _s.k2);
                 
                 const restrictedZone = document.getElementById("restricted-zone");
@@ -474,11 +462,8 @@
                 localStorage.removeItem("sec_access");
             } catch(e) {}
             const restrictedZone = document.getElementById("restricted-zone");
-            const authBox = document.getElementById("auth-section-box");
             const accessInput = document.getElementById("accessCodeInput");
-            
             if (restrictedZone) restrictedZone.classList.add("hidden");
-            if (authBox) authBox.classList.remove("hidden");
             if (accessInput) accessInput.value = "";
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -666,4 +651,3 @@
     </script>
 </body>
 </html>
-     
