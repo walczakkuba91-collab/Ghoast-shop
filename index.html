@@ -2,6 +2,7 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ghost Shop // Official Store</title>
     <style>
         * { box-sizing: border-box; }
@@ -10,12 +11,13 @@
             color: #c5c6c7;
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
-            padding: 20px;
+            padding: 15px;
+            -webkit-text-size-adjust: 100%;
         }
         .header {
             border-bottom: 2px dashed #45a29e;
-            padding-bottom: 15px;
-            margin-bottom: 25px;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -23,76 +25,78 @@
         .header h1 {
             color: #66fcf1;
             margin: 0;
-            font-size: 24px;
-            letter-spacing: 2px;
+            font-size: 20px;
+            letter-spacing: 1px;
         }
         .badge {
             background: #1f2833;
             color: #66fcf1;
-            padding: 5px 10px;
+            padding: 4px 8px;
             border: 1px solid #45a29e;
-            font-size: 12px;
+            font-size: 10px;
         }
         .panel {
             background: #1f2833;
             border: 1px solid #45a29e;
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 15px;
+            margin-bottom: 15px;
             border-radius: 4px;
         }
-        .hidden { display: none; }
+        .hidden { display: none !important; }
         .price { color: #66fcf1; font-weight: bold; }
         .calc-note { font-size: 11px; color: #8892b0; margin-top: 4px; }
-        button, .admin-btn {
+        button {
             background: #0b0c10;
             color: #66fcf1;
             border: 1px solid #66fcf1;
-            padding: 10px 18px;
+            padding: 10px 15px;
             cursor: pointer;
             font-family: 'Courier New', Courier, monospace;
             font-weight: bold;
-            transition: all 0.3s ease;
-            text-decoration: none;
             display: inline-block;
             text-align: center;
+            touch-action: manipulation;
+            width: 100%;
+            margin-top: 5px;
         }
-        button:hover, .admin-btn:hover {
+        button:active {
             background: #66fcf1;
             color: #0b0c10;
         }
-        ul { padding-left: 20px; }
-        li { margin-bottom: 12px; line-height: 1.5; }
+        ul { padding-left: 15px; margin: 5px 0; }
+        li { margin-bottom: 10px; line-height: 1.4; font-size: 13px; }
         .login-box {
             margin-top: 15px;
-            padding: 15px;
+            padding: 12px;
             background: #121820;
             border: 1px dashed #45a29e;
         }
         .product-card {
             background: #121820;
             border: 1px solid #283648;
-            padding: 15px;
-            margin-top: 15px;
+            padding: 12px;
+            margin-top: 12px;
             border-radius: 4px;
         }
         .crypto-box {
             background: #0b0c10;
             border: 1px solid #45a29e;
-            padding: 12px;
-            margin-top: 15px;
-            font-size: 11px;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 10px;
             word-break: break-all;
         }
         #admin-menu {
             position: fixed;
-            top: 10px;
-            left: 10px;
-            background: rgba(11, 12, 16, 0.95);
+            top: 5px;
+            left: 5px;
+            background: rgba(11, 12, 16, 0.98);
             border: 2px solid #ff4757;
-            padding: 15px;
+            padding: 12px;
             z-index: 9999;
-            width: 320px;
-            max-height: 90vh;
+            width: 95%;
+            max-width: 320px;
+            max-height: 85vh;
             overflow-y: auto;
             box-shadow: 0 0 15px rgba(255, 71, 87, 0.3);
             border-radius: 4px;
@@ -100,18 +104,18 @@
         #admin-menu h3 {
             color: #ff4757;
             margin-top: 0;
-            font-size: 14px;
+            font-size: 13px;
             border-bottom: 1px dashed #ff4757;
-            padding-bottom: 5px;
+            padding-bottom: 4px;
         }
         .form-group {
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         .form-group label {
             display: block;
-            font-size: 11px;
+            font-size: 10px;
             color: #8892b0;
-            margin-bottom: 3px;
+            margin-bottom: 2px;
         }
         .form-group input, .form-group select {
             width: 100%;
@@ -120,142 +124,121 @@
             color: #fff;
             padding: 6px;
             font-family: monospace;
-            font-size: 11px;
+            font-size: 12px;
         }
         .admin-item-row {
             background: #121820;
             border: 1px solid #283648;
-            padding: 8px;
-            margin-top: 8px;
-            font-size: 11px;
+            padding: 6px;
+            margin-top: 6px;
+            font-size: 10px;
+        }
+        input[type="text"] {
+            font-size: 14px; /* Zapobiega zoomowaniu na iOS/Android */
         }
     </style>
 </head>
 <body>
 
     <div id="admin-menu" class="hidden">
-        <h3>// ADMIN_PANEL (CODE 2921)</h3>
-        <p style="font-size: 10px; color: #ff6b81; margin-bottom: 10px;">Dodaj produkt:</p>
+        <h3>// ADMIN_PANEL (2921)</h3>
         
         <div class="form-group">
             <label>Docelowa Strefa:</label>
             <select id="adm-zone">
-                <option value="white">Biała Strefa (Główna)</option>
-                <option value="black">Czarna Strefa (Ukryta)</option>
+                <option value="white">Biała Strefa</option>
+                <option value="black">Czarna Strefa</option>
             </select>
         </div>
 
         <div class="form-group">
             <label>Nazwa Produktu:</label>
-            <input type="text" id="adm-name" placeholder="np. Agrestowy Light">
+            <input type="text" id="adm-name" placeholder="Nazwa">
         </div>
 
         <div class="form-group">
             <label>Cena:</label>
-            <input type="text" id="adm-price" placeholder="np. 15.00 PLN">
+            <input type="text" id="adm-price" placeholder="Cena PLN">
         </div>
 
         <div class="form-group">
             <label>Opis:</label>
-            <input type="text" id="adm-desc" placeholder="Krótki opis">
+            <input type="text" id="adm-desc" placeholder="Opis">
         </div>
 
-        <button type="button" onclick="adminAddProduct()" style="width: 100%; font-size: 11px; margin-bottom: 10px; border-color: #ff4757; color: #ff4757;">Dodaj Produkt</button>
+        <button type="button" onclick="adminAddProduct()" style="border-color: #ff4757; color: #ff4757;">Dodaj Produkt</button>
 
-        <hr style="border: 0; border-top: 1px dashed #45a29e; margin: 10px 0;">
-        <p style="font-size: 10px; color: #66fcf1; margin-bottom: 5px;">Zarządzanie produktami:</p>
+        <hr style="border: 0; border-top: 1px dashed #45a29e; margin: 8px 0;">
+        <p style="font-size: 10px; color: #66fcf1; margin: 0 0 4px 0;">Zarządzanie:</p>
         <div id="admin-products-manager"></div>
 
-        <hr style="border: 0; border-top: 1px dashed #45a29e; margin: 10px 0;">
+        <hr style="border: 0; border-top: 1px dashed #45a29e; margin: 8px 0;">
         
         <div class="form-group">
             <label>Nowy kod dostępu:</label>
             <input type="text" id="adm-new-code" placeholder="Kod">
         </div>
-        <button type="button" onclick="adminAddCode()" style="width: 100%; font-size: 11px; margin-bottom: 10px;">Dodaj Kod</button>
-        <button type="button" onclick="closeAdminMenu()" style="width: 100%; font-size: 10px; background: #ff4757; color: #0b0c10; border: none;">Ukryj Menu</button>
+        <button type="button" onclick="adminAddCode()">Dodaj Kod</button>
+        <button type="button" onclick="closeAdminMenu()" style="background: #ff4757; color: #0b0c10; border: none; margin-top: 8px;">Ukryj Menu</button>
     </div>
 
     <div class="header">
-        <h1>// GHOST_SHOP_SECURE_NODE</h1>
-        <div class="badge">SEC_LEVEL: MAX_LOCKDOWN</div>
+        <h1>// GHOST_SHOP</h1>
+        <div class="badge">SEC: MAX</div>
     </div>
 
     <div class="panel hidden" id="banned-panel" style="border-color: #ff4757; background: rgba(255, 71, 87, 0.05);">
-        <h2 style="color: #ff4757;">ACCESS TERMINATED // IP & MAC BAN ACTIVE</h2>
-        <p>Wprowadzono wielokrotnie błędny kod. Zablokowano dostęp.</p>
-        <p style="font-size: 11px; color: #ff6b81;" id="ban-details"></p>
+        <h2 style="color: #ff4757; font-size: 16px;">ACCESS TERMINATED</h2>
+        <p style="font-size: 12px;">Zablokowano dostęp z powodu błędnych kodów.</p>
     </div>
 
     <div class="panel" id="main-store">
-        <h2>Main Inventory // Biała Strefa (Koszulki i Wyroby)</h2>
+        <h2>Biała Strefa (Główna)</h2>
         <ul id="white-zone-list">
             <li>Koszulka Standard (Napisy / Kościół Szatana w Pruszkowie) – <span class="price">70.00 PLN</span> <div class="calc-note">Wysyłka wliczona | Monero (XMR)</div></li>
         </ul>
         <div id="white-zone-dynamic"></div>
-        <hr style="border: 0; border-top: 1px solid #45a29e; margin: 15px 0;">
         
         <div class="login-box">
-            <p style="margin: 0 0 10px 0; font-size: 12px; color: #66fcf1;">Zamówienie i Płatność:</p>
-            <p style="font-size: 11px; color: #8892b0; margin-bottom: 8px;">Przelej kwotę i wyślij potwierdzenie na: <strong style="color: #66fcf1;">urbexowy_dil@proton.me</strong></p>
-            
-            <div class="crypto-box">
-                <strong>Adres portfela (XMR):</strong><br>
-                <span style="color: #66fcf1;">45PNtVoWtr7DoJkZhxRWUY3i6ar7u47E95jwi5sqsDo5Ap2RWeq9x5SgxEXKfG9L1BMVKWCHsyxMEK76yqMYSnnsGM3J1Cr</span>
-            </div>
-
-            <div style="margin-top: 15px;">
-                <button type="button" onclick="simulateTransaction()">Zaksięguj / Wyślij powiadomienie</button>
-            </div>
+            <p style="margin: 0 0 6px 0; font-size: 11px; color: #66fcf1;">Płatność XMR:</p>
+            <p style="font-size: 10px; color: #8892b0; margin-bottom: 6px;">Wyślij potwierdzenie na: <strong style="color: #66fcf1;">urbexowy_dil@proton.me</strong></p>
+            <div class="crypto-box">45PNtVoWtr7DoJkZhxRWUY3i6ar7u47E95jwi5sqsDo5Ap2RWeq9x5SgxEXKfG9L1BMVKWCHsyxMEK76yqMYSnnsGM3J1Cr</div>
+            <button type="button" onclick="alert('Wyślij potwierdzenie na: urbexowy_dil@proton.me')">Zaksięguj / Wyślij</button>
         </div>
 
-        <hr style="border: 0; border-top: 1px solid #45a29e; margin: 15px 0;">
-
         <div class="login-box" id="login-container">
-            <p style="margin: 0 0 10px 0; font-size: 12px; color: #66fcf1;">Strefa ukryta (Kod dostępu):</p>
-            <input type="text" id="accessCodeInput" placeholder="Wprowadź kod..." style="background: #0b0c10; border: 1px solid #45a29e; color: #fff; padding: 8px; width: 200px; font-family: monospace;">
-            <button type="button" onclick="verifyAndUnlock()">Zatwierdź kod</button>
-            <p style="font-size: 10px; color: #ff4757; margin-top: 8px;" id="attempts-warning">Pozostałe próby: 3</p>
+            <p style="margin: 0 0 6px 0; font-size: 11px; color: #66fcf1;">Strefa ukryta (Kod):</p>
+            <input type="text" id="accessCodeInput" placeholder="Wprowadź kod..." style="background: #0b0c10; border: 1px solid #45a29e; color: #fff; padding: 6px; width: 100%; margin-bottom: 5px;">
+            <button type="button" id="verifyBtn">Zatwierdź kod</button>
+            <p style="font-size: 10px; color: #ff4757; margin-top: 6px;" id="attempts-warning">Pozostałe próby: 3</p>
         </div>
     </div>
 
-    <!-- CZARNA STREFA - Nasiona na stałe tutaj -->
+    <!-- CZARNA STREFA -->
     <div class="panel hidden" id="restricted-zone">
-        <h2>Restricted Zone // Czarna Strefa (Katalog AK)</h2>
+        <h2>Czarna Strefa (Ukryta)</h2>
         
         <div id="black-zone-dynamic"></div>
 
+        <!-- STATYCZNY PRODUKT (NASIONA AK) - NA STAŁE W CZARNEJ STREFIE -->
         <div class="product-card">
-            <h3>Holenderski Skun - Nasiona Marihuany AK (Kolekcjonerskie)</h3>
-            <p style="font-size: 12px; color: #8892b0;">Recenzje ( 0 ), komentarze ( 0 )</p>
+            <h3>Holenderski Skun - Nasiona Marihuany AK</h3>
+            <p style="font-size: 11px; color: #8892b0;">Oferta kolekcjonerska</p>
             
-            <div style="margin: 15px 0; text-align: center;">
-                <img src="ak47_1421.jpg" alt="AK-47" style="max-width: 100%; height: auto; border: 1px solid #45a29e; border-radius: 4px;">
+            <div style="margin: 10px 0; text-align: center;">
+                <img src="ak47_1421.jpg" alt="AK-47" style="max-width: 100%; height: auto; border: 1px solid #45a29e;">
             </div>
 
-            <p><strong>Warianty cenowe:</strong></p>
             <ul>
                 <li>1 szt. – <span class="price">25.00 zł</span></li>
                 <li>3+1 szt. – <span class="price">59.00 zł</span></li>
                 <li>5+2 szt. – <span class="price">79.00 zł</span></li>
                 <li>10+4 szt. – <span class="price">139.00 zł</span></li>
             </ul>
-            <p style="font-size: 12px;"><span class="price">Wysyłka gratis</span> od 60 PLN</p>
-            
-            <div style="background: #0b0c10; padding: 10px; border: 1px dashed #45a29e; margin-top: 10px;">
-                <p style="margin: 0 0 5px 0; font-size: 12px;"><strong>Opis kolekcjonerski:</strong></p>
-                <p style="font-size: 11px; line-height: 1.4;">
-                Uprawa nasion konopi jest zakazana w Polsce. Oferta wyłącznie kolekcjonerska. Nasiona nie zawierają THC.
-                </p>
-            </div>
-
-            <div style="margin-top: 15px;">
-                <button type="button" onclick="simulateTransactionRestricted()">Zamów / Przelej na portfel</button>
-            </div>
+            <button type="button" onclick="alert('Zamówienie ze strefy ukrytej. Wyślij potwierdzenie na: urbexowy_dil@proton.me')">Zamów</button>
         </div>
 
-        <br>
-        <button type="button" onclick="lockZone()">Zablokuj strefę</button>
+        <button type="button" onclick="lockZone()" style="background: #ff4757; color: #0b0c10; border: none; margin-top: 15px;">Zablokuj strefę</button>
     </div>
 
     <script>
@@ -265,7 +248,7 @@
         let failedAttempts = parseInt(localStorage.getItem("failed_attempts") || "0");
         const maxAttempts = 3;
 
-        window.onload = function() {
+        window.addEventListener('DOMContentLoaded', () => {
             if (localStorage.getItem("node_banned") === "true") {
                 triggerBanUI();
                 return;
@@ -277,53 +260,49 @@
             renderDynamicProducts();
             updateAttemptsDisplay();
 
-            const codeInput = document.getElementById("accessCodeInput");
-            if (codeInput) {
-                codeInput.addEventListener("keypress", function(event) {
-                    if (event.key === "Enter") {
-                        event.preventDefault();
-                        verifyAndUnlock();
-                    }
-                });
-            }
-        };
+            document.getElementById("verifyBtn").addEventListener("click", verifyAndUnlock);
+            document.getElementById("accessCodeInput").addEventListener("keydown", (e) => {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                    verifyAndUnlock();
+                }
+            });
+        });
 
         function triggerBanUI() {
             document.getElementById("main-store").style.display = "none";
             document.getElementById("restricted-zone").classList.add("hidden");
             document.getElementById("admin-menu").classList.add("hidden");
             document.getElementById("banned-panel").classList.remove("hidden");
-            document.getElementById("ban-details").innerHTML = "Zablokowany IP: [185.220.101.5] | MAC: [00:1a:2b:4c:5d:6e]";
         }
 
         function verifyAndUnlock() {
             if (localStorage.getItem("node_banned") === "true") return;
-            const inputVal = document.getElementById("accessCodeInput").value.trim();
+            const val = document.getElementById("accessCodeInput").value.trim();
             
-            if (inputVal === "2921" || validCodes.includes(inputVal)) {
+            if (val === "2921" || validCodes.includes(val)) {
                 localStorage.setItem("sec_access", "true");
                 localStorage.setItem("failed_attempts", "0");
                 document.getElementById("restricted-zone").classList.remove("hidden");
                 document.getElementById("admin-menu").classList.remove("hidden");
-                alert("Autoryzacja pomyślna. Panel Admina aktywny.");
             } else {
                 failedAttempts++;
                 localStorage.setItem("failed_attempts", failedAttempts);
                 if (failedAttempts >= maxAttempts) {
                     localStorage.setItem("node_banned", "true");
                     triggerBanUI();
-                    alert("Zbyt dużo prób. Nałożono blokadę.");
                 } else {
-                    alert("Nieprawidłowy kod. Pozostałe próby: " + (maxAttempts - failedAttempts));
                     updateAttemptsDisplay();
+                    alert("Nieprawidłowy kod.");
                 }
             }
         }
 
         function updateAttemptsDisplay() {
-            let remaining = maxAttempts - failedAttempts;
-            if (remaining < 0) remaining = 0;
-            document.getElementById("attempts-warning").innerText = "Pozostałe próby: " + remaining;
+            let rem = maxAttempts - failedAttempts;
+            if (rem < 0) rem = 0;
+            const el = document.getElementById("attempts-warning");
+            if (el) el.innerText = "Pozostałe próby: " + rem;
         }
 
         function lockZone() {
@@ -360,17 +339,16 @@
             document.getElementById("adm-name").value = "";
             document.getElementById("adm-price").value = "";
             document.getElementById("adm-desc").value = "";
-            alert("Dodano pomyślnie!");
         }
 
         function adminAddCode() {
-            const newCode = document.getElementById("adm-new-code").value.trim();
-            if (!newCode) return;
-            if (!validCodes.includes(newCode)) {
-                validCodes.push(newCode);
+            const code = document.getElementById("adm-new-code").value.trim();
+            if (!code) return;
+            if (!validCodes.includes(code)) {
+                validCodes.push(code);
                 localStorage.setItem("valid_codes", JSON.stringify(validCodes));
                 document.getElementById("adm-new-code").value = "";
-                alert("Dodano nowy kod!");
+                alert("Kod dodany!");
             }
         }
 
@@ -379,11 +357,7 @@
             let whiteHtml = `<li>Koszulka Standard (Napisy / Kościół Szatana w Pruszkowie) – <span class="price">70.00 PLN</span> <div class="calc-note">Wysyłka wliczona | Monero (XMR)</div></li>`;
             
             whiteProducts.forEach(p => {
-                whiteHtml += `
-                <li>
-                    ${p.name} – <span class="price">${p.price}</span> 
-                    <div class="calc-note">${p.desc || 'Biała Strefa'}</div>
-                </li>`;
+                whiteHtml += `<li>${p.name} – <span class="price">${p.price}</span><div class="calc-note">${p.desc || ''}</div></li>`;
             });
             whiteList.innerHTML = whiteHtml;
 
@@ -394,41 +368,37 @@
                 <div class="product-card">
                     <h3>${p.name}</h3>
                     <p class="price">${p.price}</p>
-                    <p style="font-size: 11px; color: #8892b0;">${p.desc || 'Czarna Strefa'}</p>
-                    <button type="button" onclick="simulateTransactionRestricted()" style="margin-top:10px;">Zamów</button>
+                    <p style="font-size: 10px; color: #8892b0;">${p.desc || ''}</p>
+                    <button type="button" onclick="alert('Zamówienie ze strefy ukrytej. Wyślij potwierdzenie na: urbexowy_dil@proton.me')">Zamów</button>
                 </div>`;
             });
             blackContainer.innerHTML = blackHtml;
 
-            // Renderowanie panelu zarządzania strefami w menu admina
+            // Panel zarządzania w menu admina
             const adminManager = document.getElementById("admin-products-manager");
             let managerHtml = "";
             
-            allProducts().forEach(p => {
+            let all = [];
+            whiteProducts.forEach(p => all.push({ ...p, zone: 'white' }));
+            blackProducts.forEach(p => all.push({ ...p, zone: 'black' }));
+
+            all.forEach(p => {
                 managerHtml += `
                 <div class="admin-item-row">
-                    <strong>${p.name}</strong><br>
-                    <span style="color:#8892b0;">Aktualnie: ${p.zone === 'white' ? 'Biała' : 'Czarna'}</span>
-                    <div style="margin-top: 5px; display: flex; gap: 5px;">
-                        <select onchange="moveDynamicProduct(${p.id}, this.value)" style="background: #0b0c10; border: 1px solid #45a29e; color: #fff; padding: 2px; font-size: 10px; width: 70%;">
-                            <option value="white" ${p.zone === 'white' ? 'selected' : ''}>Biała Strefa</option>
-                            <option value="black" ${p.zone === 'black' ? 'selected' : ''}>Czarna Strefa</option>
+                    <strong>${p.name}</strong>
+                    <div style="margin-top: 4px; display: flex; gap: 4px;">
+                        <select onchange="moveProduct(${p.id}, this.value)" style="background: #0b0c10; border: 1px solid #45a29e; color: #fff; padding: 2px; font-size: 10px; width: 65%;">
+                            <option value="white" ${p.zone === 'white' ? 'selected' : ''}>Biała</option>
+                            <option value="black" ${p.zone === 'black' ? 'selected' : ''}>Czarna</option>
                         </select>
-                        <button type="button" onclick="deleteProduct(${p.id}, '${p.zone}')" style="font-size:9px; padding:2px 5px; background:#ff4757; color:#0b0c10; border:none; width: 25%;">Usuń</button>
+                        <button type="button" onclick="deleteProduct(${p.id}, '${p.zone}')" style="font-size:9px; padding:2px; background:#ff4757; color:#0b0c10; border:none; width: 30%; margin:0;">Usuń</button>
                     </div>
                 </div>`;
             });
-            adminManager.innerHTML = managerHtml || '<p style="font-size:10px; color:#8892b0;">Brak dodanych produktów.</p>';
+            adminManager.innerHTML = managerHtml || '<span style="font-size:10px; color:#8892b0;">Brak produktów.</span>';
         }
 
-        function allProducts() {
-            let list = [];
-            whiteProducts.forEach(p => list.push({ ...p, zone: 'white' }));
-            blackProducts.forEach(p => list.push({ ...p, zone: 'black' }));
-            return list;
-        }
-
-        function moveDynamicProduct(id, targetZone) {
+        function moveProduct(id, targetZone) {
             let item = null;
             let idx = whiteProducts.findIndex(p => p.id === id);
             if (idx !== -1) {
@@ -439,14 +409,10 @@
                     item = blackProducts.splice(idx, 1)[0];
                 }
             }
-
             if (!item) return;
 
-            if (targetZone === 'white') {
-                whiteProducts.push(item);
-            } else {
-                blackProducts.push(item);
-            }
+            if (targetZone === 'white') whiteProducts.push(item);
+            else blackProducts.push(item);
 
             localStorage.setItem("white_products", JSON.stringify(whiteProducts));
             localStorage.setItem("black_products", JSON.stringify(blackProducts));
@@ -463,11 +429,6 @@
             }
             renderDynamicProducts();
         }
-
-        function simulateTransaction() {
-            alert("Wyślij potwierdzenie na: urbexowy_dil@proton.me");
-        }
-
-        function simulateTransactionRestricted() {
-            alert("Zamówienie ze strefy ukrytej. Wyślij potwierdzenie na: urbexowy_dil@proton.me");
-        
+    </script>
+</body>
+</html>
