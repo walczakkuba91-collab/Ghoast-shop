@@ -5,107 +5,171 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>// GHOST_SHOP</title>
     <style>
+        :root {
+            --bg-color: #0b0c10;
+            --panel-bg: rgba(31, 40, 51, 0.6);
+            --card-bg: #0b0c10;
+            --border-color: #45a29e;
+            --text-main: #66fcf1;
+            --text-muted: #8892b0;
+            --text-header: #c5c6c7;
+            --accent-red: #ff4757;
+            --accent-hover: #45a29e;
+        }
+
         body {
-            background-color: #0b0c10;
-            color: #66fcf1;
+            background-color: var(--bg-color);
+            color: var(--text-main);
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
-            padding: 10px;
-            font-size: 11px;
-            line-height: 1.4;
+            padding: 12px;
+            font-size: 12px;
+            line-height: 1.5;
+            -webkit-text-size-adjust: 100%;
         }
+
         header {
-            border-bottom: 1px dashed #45a29e;
-            padding-bottom: 6px;
-            margin-bottom: 10px;
+            border-bottom: 2px dashed var(--border-color);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
+
         .title {
-            font-size: 13px;
+            font-size: 15px;
             font-weight: bold;
-            letter-spacing: 1px;
-            color: #66fcf1;
+            letter-spacing: 2px;
+            color: var(--text-main);
+            text-shadow: 0 0 8px rgba(102, 252, 241, 0.4);
         }
+
         .sys-status {
-            font-size: 9px;
-            border: 1px solid #45a29e;
-            padding: 2px 6px;
+            font-size: 10px;
+            border: 1px solid var(--border-color);
+            padding: 4px 8px;
             background: #1f2833;
+            letter-spacing: 1px;
+            box-shadow: inset 0 0 5px rgba(69, 162, 158, 0.3);
         }
+
         .section-box {
-            border: 1px dashed #45a29e;
-            padding: 8px;
-            margin-bottom: 10px;
-            background: rgba(31, 40, 51, 0.4);
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            margin-bottom: 15px;
+            background: var(--panel-bg);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            border-radius: 2px;
         }
+
         .section-title {
-            font-size: 11px;
+            font-size: 12px;
             font-weight: bold;
-            color: #c5c6c7;
-            margin-bottom: 6px;
+            color: var(--text-header);
+            margin-bottom: 10px;
             text-transform: uppercase;
+            letter-spacing: 1px;
+            border-left: 3px solid var(--border-color);
+            padding-left: 6px;
         }
+
         .product-card {
-            border: 1px solid #45a29e;
-            padding: 8px;
-            margin-bottom: 8px;
-            background: #0b0c10;
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            margin-bottom: 10px;
+            background: var(--card-bg);
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
         }
+
+        .product-card:hover {
+            box-shadow: 0 0 10px rgba(69, 162, 158, 0.2);
+        }
+
         .price {
-            color: #45a29e;
+            color: var(--border-color);
             font-weight: bold;
+            font-size: 13px;
         }
+
         input[type="text"], input[type="password"], select {
-            background: #0b0c10;
-            border: 1px solid #45a29e;
-            color: #66fcf1;
-            padding: 6px;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 8px;
             font-family: inherit;
-            font-size: 11px;
+            font-size: 12px;
             width: 100%;
             box-sizing: border-box;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
+            outline: none;
         }
+
+        input[type="text"]:focus, input[type="password"]:focus, select:focus {
+            box-shadow: 0 0 5px var(--border-color);
+        }
+
         button {
             background: #1f2833;
-            border: 1px solid #45a29e;
-            color: #66fcf1;
-            padding: 6px 10px;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 10px;
             font-family: inherit;
-            font-size: 11px;
+            font-size: 12px;
             cursor: pointer;
             width: 100%;
             text-align: center;
             font-weight: bold;
+            letter-spacing: 1px;
+            transition: background 0.2s, color 0.2s;
         }
+
+        button:active {
+            transform: scale(0.99);
+        }
+
         button:hover {
-            background: #45a29e;
-            color: #0b0c10;
+            background: var(--accent-hover);
+            color: var(--bg-color);
         }
+
         .hidden {
-            display: none;
+            display: none !important;
         }
+
         .warning {
-            color: #ff4757;
-            font-size: 10px;
+            color: var(--accent-red);
+            font-size: 11px;
         }
+
         .form-group {
-            margin-bottom: 6px;
+            margin-bottom: 8px;
         }
+
         .form-group label {
             display: block;
-            font-size: 9px;
-            color: #8892b0;
-            margin-bottom: 2px;
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-bottom: 3px;
+            letter-spacing: 0.5px;
         }
+
         .admin-item-row {
             border: 1px solid #1f2833;
-            padding: 6px;
-            margin-bottom: 6px;
-            background: #0b0c10;
+            padding: 8px;
+            margin-bottom: 8px;
+            background: var(--bg-color);
         }
+
+        .data-box {
+            word-break: break-all;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            padding: 8px;
+            font-size: 11px;
+            margin-bottom: 8px;
+        }
+
         #bot-check-field {
             display: none !important;
         }
@@ -115,16 +179,16 @@
 
     <header>
         <div class="title">// GHOST_SHOP</div>
-        <div class="sys-status" id="sys-status-badge">SYS: OK</div>
+        <div class="sys-status" id="sys-status-badge">SYS: ONLINE</div>
     </header>
 
-    <!-- Zabezpieczenie przed botami (honeypot) -->
+    <!-- Honeypot -->
     <input type="text" id="bot-check-field" autocomplete="off" tabindex="-1">
 
-    <div id="banned-panel" class="section-box hidden" style="border-color: #ff4757;">
-        <div class="section-title" style="color: #ff4757;">// DOSTĘP ZABLOKOWANY</div>
+    <div id="banned-panel" class="section-box hidden" style="border-color: var(--accent-red);">
+        <div class="section-title" style="color: var(--accent-red);">// DOSTĘP ZABLOKOWANY</div>
         <p class="warning">Wykryto niedozwoloną aktywność lub przekroczono limit prób autoryzacji.</p>
-        <button type="button" onclick="resetBan()" style="margin-top: 8px; border-color: #ff4757; color: #ff4757;">Zresetuj blokadę</button>
+        <button type="button" onclick="resetBan()" style="margin-top: 10px; border-color: var(--accent-red); color: var(--accent-red);">Zresetuj blokadę</button>
     </div>
 
     <div id="main-store">
@@ -137,32 +201,42 @@
             <div class="section-title">Płatność / Przelew XMR</div>
             <div class="form-group">
                 <label>Adres kontaktowy:</label>
-                <div id="contact-email-container" style="color: #66fcf1; font-weight: bold; margin-bottom: 6px; word-break: break-all;">[Ładowanie...]</div>
+                <div id="contact-email-container" class="data-box" style="color: var(--text-main); font-weight: bold;">[Ładowanie...]</div>
             </div>
             <div class="form-group">
                 <label>Portfel / Adres docelowy:</label>
-                <div id="xmr-address-container" style="word-break: break-all; background: #0b0c10; border: 1px solid #45a29e; padding: 6px; font-size: 10px; margin-bottom: 6px;">[Ładowanie...]</div>
+                <div id="xmr-address-container" class="data-box">[Ładowanie...]</div>
             </div>
             <button type="button" onclick="sendConfirmation()">Wyślij Potwierdzenie</button>
         </div>
 
         <div class="section-box">
             <div class="section-title">Strefa Autoryzacji (Węzeł)</div>
-            <input type="password" id="accessCodeInput" placeholder="Wprowadź klucz (np. 1984 / 2001)...">
+            <div class="form-group">
+                <input type="password" id="accessCodeInput" placeholder="Wprowadź klucz (np. 1984 / 2001)...">
+            </div>
             <button type="button" id="verifyBtn">Wykonaj</button>
-            <div id="attempts-warning" class="warning" style="margin-top: 6px;"></div>
+            <div id="attempts-warning" class="warning" style="margin-top: 8px;"></div>
         </div>
     </div>
 
-    <div id="restricted-zone" class="section-box hidden" style="border-color: #45a29e;">
+    <div id="restricted-zone" class="section-box hidden" style="border-color: var(--border-color);">
         <div id="dynamic-zone-content"></div>
     </div>
 
     <script>
-        // Reset ewentualnych blokad przy starcie
-        localStorage.removeItem("node_banned");
-        if (localStorage.getItem("failed_attempts") > 2) {
-            localStorage.setItem("failed_attempts", "0");
+        // Bezpieczny rozruch i czyszczenie błędnych stanów z localStorage
+        try {
+            if (localStorage.getItem("node_banned") === "true") {
+                // Jeśli użytkownik był zbanowany, ale minął sesyjny stan, zabezpieczamy stabilność
+                let attempts = parseInt(localStorage.getItem("failed_attempts") || "0");
+                if (isNaN(attempts) || attempts > 3) {
+                    localStorage.removeItem("node_banned");
+                    localStorage.setItem("failed_attempts", "0");
+                }
+            }
+        } catch(e) {
+            console.error("Storage error:", e);
         }
 
         const _secLayer = {
@@ -185,10 +259,23 @@
             xmr: _secLayer.d("NlBOdFZvV3I3RG9KZkt6SFJXVVkzajZhcjd1NDdFOTNqd2k1c3FzRG81QWpSMlJ3ZXE5eDVTZ3JYS2ZHOUwxQlZLV0NoU3l4TURLNzZ5cU1ZU25zJUdNMyJTY3I=") || "45PNtVoWTr7DoJkZhXRWUY3i6ar7u47E95jwi5sqsDo5Ap2RWeq9x5SgEXKfG9L1BMVKWChSyxMEK76yqMYSrnsGM3J1Cr"
         };
 
-        let validCodes = JSON.parse(localStorage.getItem("valid_codes") || JSON.stringify([_s.k1, _s.k2]));
-        let whiteProducts = JSON.parse(localStorage.getItem("white_products") || '[]');
-        let blackProducts = JSON.parse(localStorage.getItem("black_products") || '[]');
-        let failedAttempts = parseInt(localStorage.getItem("failed_attempts") || "0");
+        let validCodes = [];
+        let whiteProducts = [];
+        let blackProducts = [];
+        let failedAttempts = 0;
+        
+        try {
+            validCodes = JSON.parse(localStorage.getItem("valid_codes") || JSON.stringify([_s.k1, _s.k2]));
+            whiteProducts = JSON.parse(localStorage.getItem("white_products") || '[]');
+            blackProducts = JSON.parse(localStorage.getItem("black_products") || '[]');
+            failedAttempts = parseInt(localStorage.getItem("failed_attempts") || "0");
+        } catch(e) {
+            validCodes = [_s.k1, _s.k2];
+            whiteProducts = [];
+            blackProducts = [];
+            failedAttempts = 0;
+        }
+
         const maxAttempts = 3;
 
         const defaultWhiteProducts = [
@@ -199,64 +286,104 @@
             { name: "Agrestowy Light [~12-14%]", price: "16.50 PLN", desc: "Flaszka | Rześki, konkretnie kwaśny profil z naturalnego agrestu" },
             { name: "Wiśniowa Lekkość [~12-14%]", price: "16.50 PLN", desc: "Flaszka | Głęboki, naturalny smak dojrzałej wiśni" },
             { name: "Czarna Porzeczka [~12-14%]", price: "16.50 PLN", desc: "Flaszka | Wyrazisty, ciemny trunek z czarnej porzeczki" },
-            { name: "Cytrynowe Żylety [~12-14%]", price: "16.50 PLN", desc: "Flaszka | Orzeźwiająca bomba cytrusowa" }
+            { name: "Cytrynone Żylety [~12-14%]", price: "16.50 PLN", desc: "Flaszka | Orzeźwiająca bomba cytrusowa" }
         ];
 
         window.addEventListener('DOMContentLoaded', () => {
-            localStorage.removeItem("sec_access");
+            // Sprawdzenie stanu blokady przy wejściu
+            if (localStorage.getItem("node_banned") === "true") {
+                const mainStore = document.getElementById("main-store");
+                if (mainStore) mainStore.style.display = "none";
+                const bannedPanel = document.getElementById("banned-panel");
+                if (bannedPanel) bannedPanel.classList.remove("hidden");
+                return;
+            }
 
-            document.getElementById("contact-email-containerinnerText" in document.getElementById("contact-email-container") ? "innerText" : "textContent") = _s.m;
-            document.getElementById("contact-email-container").innerText = _s.m;
-            document.getElementById("xmr-address-container").innerText = _s.xmr;
+            const emailContainer = document.getElementById("contact-email-container");
+            const xmrContainer = document.getElementById("xmr-address-container");
+            
+            if (emailContainer) emailContainer.innerText = _s.m;
+            if (xmrContainer) xmrContainer.innerText = _s.xmr;
 
             renderDynamicProducts();
             updateAttemptsDisplay();
 
-            document.getElementById("verifyBtn").addEventListener("click", verifyAndUnlock);
-            document.getElementById("accessCodeInput").addEventListener("keydown", (e) => {
-                if (e.key === "Enter") {
-                    e.preventDefault();
-                    verifyAndUnlock();
-                }
-            });
+            const verifyBtn = document.getElementById("verifyBtn");
+            const accessInput = document.getElementById("accessCodeInput");
+
+            if (verifyBtn) verifyBtn.addEventListener("click", verifyAndUnlock);
+            if (accessInput) {
+                accessInput.addEventListener("keydown", (e) => {
+                    if (e.key === "Enter") {
+                        e.preventDefault();
+                        verifyAndUnlock();
+                    }
+                });
+            }
         });
 
         function orderProduct(name, price) {
-            const subject = encodeURIComponent(`Zamówienie: ${name}`);
-            const body = encodeURIComponent(`Dzień dobry,\n\nChciałbym zamówić:\n- Pozycja: ${name}\n- Wartość: ${price}\n\nDane / Potwierdzenie XMR:\n[Wpisz szczegóły]`);
-            window.location.href = `mailto:${_s.m}?subject=${subject}&body=${body}`;
+            try {
+                const subject = encodeURIComponent(`Zamówienie: ${name}`);
+                const body = encodeURIComponent(`Dzień dobry,\n\nChciałbym zamówić:\n- Pozycja: ${name}\n- Wartość: ${price}\n\nDane / Potwierdzenie XMR:\n[Wpisz szczegóły]`);
+                window.location.href = `mailto:${_s.m}?subject=${subject}&body=${body}`;
+            } catch(e) {
+                alert("Nie udało się uruchomić klienta poczty.");
+            }
         }
 
         function sendConfirmation() {
-            const subject = encodeURIComponent(`Potwierdzenie przelewu XMR`);
-            const body = encodeURIComponent(`Dzień dobry,\n\nPrzesyłam potwierdzenie / szczegóły transakcji XMR na adres:\n${_s.xmr}\n\nSzczegóły:\n[Wpisz tutaj dane]`);
-            window.location.href = `mailto:${_s.m}?subject=${subject}&body=${body}`;
+            try {
+                const subject = encodeURIComponent(`Potwierdzenie przelewu XMR`);
+                const body = encodeURIComponent(`Dzień dobry,\n\nPrzesyłam potwierdzenie / szczegóły transakcji XMR na adres:\n${_s.xmr}\n\nSzczegóły:\n[Wpisz tutaj dane]`);
+                window.location.href = `mailto:${_s.m}?subject=${subject}&body=${body}`;
+            } catch(e) {
+                alert("Nie udało się uruchomić klienta poczty.");
+            }
         }
 
         function resetBan() {
-            localStorage.removeItem("node_banned");
-            localStorage.setItem("failed_attempts", "0");
-            location.reload();
+            try {
+                localStorage.removeItem("node_banned");
+                localStorage.setItem("failed_attempts", "0");
+                location.reload();
+            } catch(e) {
+                window.location.reload();
+            }
         }
 
         function verifyAndUnlock() {
-            const val = document.getElementById("accessCodeInput").value.trim();
+            const inputEl = document.getElementById("accessCodeInput");
+            if (!inputEl) return;
+            const val = inputEl.value.trim();
             
             if (val === _s.k1 || val === _s.k2 || validCodes.includes(val)) {
-                localStorage.setItem("sec_access", "true");
-                localStorage.setItem("failed_attempts", "0");
+                try {
+                    localStorage.setItem("sec_access", "true");
+                    localStorage.setItem("failed_attempts", "0");
+                } catch(e) {}
                 
                 buildRestrictedZone(val === _s.k2);
                 
-                document.getElementById("restricted-zone").classList.remove("hidden");
-                document.getElementById("restricted-zone").scrollIntoView({ behavior: 'smooth' });
+                const restrictedZone = document.getElementById("restricted-zone");
+                if (restrictedZone) {
+                    restrictedZone.classList.remove("hidden");
+                    restrictedZone.scrollIntoView({ behavior: 'smooth' });
+                }
             } else {
                 failedAttempts++;
-                localStorage.setItem("failed_attempts", failedAttempts);
+                try {
+                    localStorage.setItem("failed_attempts", failedAttempts);
+                } catch(e) {}
+
                 if (failedAttempts >= maxAttempts) {
-                    localStorage.setItem("node_banned", "true");
-                    document.getElementById("main-store").style.display = "none";
-                    document.getElementById("banned-panel").classList.remove("hidden");
+                    try {
+                        localStorage.setItem("node_banned", "true");
+                    } catch(e) {}
+                    const mainStore = document.getElementById("main-store");
+                    const bannedPanel = document.getElementById("banned-panel");
+                    if (mainStore) mainStore.style.display = "none";
+                    if (bannedPanel) bannedPanel.classList.remove("hidden");
                 } else {
                     updateAttemptsDisplay();
                     alert("Błędny klucz autoryzacji.");
@@ -266,12 +393,14 @@
 
         function buildRestrictedZone(isAdmin) {
             const container = document.getElementById("dynamic-zone-content");
-            let html = `<h2 style="font-size: 13px; margin-top:0;">// ${_s.t1}</h2>`;
+            if (!container) return;
+            
+            let html = `<h2 style="font-size: 13px; margin-top:0; color: var(--text-main);">// ${_s.t1}</h2>`;
 
             if (isAdmin) {
                 html += `
-                <div id="admin-menu" style="border: 1px dashed #45a29e; padding: 6px; margin-bottom: 8px;">
-                    <h3 style="margin: 0 0 6px 0; font-size: 11px;">// PANEL ADMINISTRATORA (ROOT)</h3>
+                <div id="admin-menu" style="border: 1px dashed var(--border-color); padding: 8px; margin-bottom: 12px; background: rgba(11, 12, 16, 0.5);">
+                    <h3 style="margin: 0 0 8px 0; font-size: 11px; color: var(--text-header);">// PANEL ADMINISTRATORA (ROOT)</h3>
                     <div class="form-group">
                         <label>Katalog docelowy:</label>
                         <select id="adm-zone">
@@ -291,11 +420,11 @@
                         <label>Opis / Parametry:</label>
                         <input type="text" id="adm-desc" placeholder="Opis">
                     </div>
-                    <button type="button" onclick="adminAddProduct()" style="border-color: #ff4757; color: #ff4757; margin-bottom: 6px;">Dodaj Pozycję</button>
-                    <hr style="border: 0; border-top: 1px dashed #45a29e; margin: 8px 0;">
-                    <p style="font-size: 9px; color: #66fcf1; margin: 0 0 4px 0;">Zarządzanie zasobami:</p>
+                    <button type="button" onclick="adminAddProduct()" style="border-color: var(--accent-red); color: var(--accent-red); margin-bottom: 8px;">Dodaj Pozycję</button>
+                    <hr style="border: 0; border-top: 1px dashed var(--border-color); margin: 10px 0;">
+                    <p style="font-size: 10px; color: var(--text-main); margin: 0 0 6px 0;">Zarządzanie zasobami:</p>
                     <div id="admin-products-manager"></div>
-                    <hr style="border: 0; border-top: 1px dashed #45a29e; margin: 8px 0;">
+                    <hr style="border: 0; border-top: 1px dashed var(--border-color); margin: 10px 0;">
                     <div class="form-group">
                         <label>Nowy klucz dostępu:</label>
                         <input type="text" id="adm-new-code" placeholder="Klucz">
@@ -308,20 +437,20 @@
 
             html += `
             <div class="product-card">
-                <h3 style="font-size: 12px; margin: 0 0 4px 0;">${_s.t2}</h3>
-                <p style="font-size: 9px; color: #8892b0; margin: 0 0 6px 0;">${_s.t3}</p>
-                <div style="margin: 6px 0; text-align: center;">
-                    <img src="ak47_1421.jpg" alt="AK" style="max-width: 100%; height: auto; border: 1px solid #45a29e;">
+                <h3 style="font-size: 12px; margin: 0 0 4px 0; color: var(--text-main);">${_s.t2}</h3>
+                <p style="font-size: 10px; color: var(--text-muted); margin: 0 0 8px 0;">${_s.t3}</p>
+                <div style="margin: 8px 0; text-align: center;">
+                    <img src="ak47_1421.jpg" alt="AK" style="max-width: 100%; height: auto; border: 1px solid var(--border-color);">
                 </div>
-                <ul style="padding-left: 12px; margin: 4px 0;">
+                <ul style="padding-left: 15px; margin: 6px 0;">
                     <li style="font-size: 11px; margin-bottom: 4px;">1 jedn. – <span class="price">27.50 zł</span></li>
                     <li style="font-size: 11px; margin-bottom: 4px;">3+1 jedn. – <span class="price">65.00 zł</span></li>
                     <li style="font-size: 11px; margin-bottom: 4px;">5+2 jedn. – <span class="price">87.00 zł</span></li>
                     <li style="font-size: 11px; margin-bottom: 4px;">10+4 jedn. – <span class="price">153.00 zł</span></li>
                 </ul>
-                <button type="button" onclick="orderProduct('${_s.t2}', 'Od 27.50 PLN (${_s.t1})')">Zamów pakiet</button>
+                <button type="button" onclick="orderProduct('${_s.t2}', 'Od 27.50 PLN (${_s.t1})')" style="margin-top: 5px;">Zamów pakiet</button>
             </div>
-            <button type="button" onclick="lockZone()" style="background: #ff4757; color: #0b0c10; border: none; margin-top: 10px;">Zamknij strefę</button>`;
+            <button type="button" onclick="lockZone()" style="background: var(--accent-red); color: var(--bg-color); border: none; margin-top: 10px;">Zamknij strefę</button>`;
 
             container.innerHTML = html;
             renderDynamicProducts();
@@ -335,17 +464,28 @@
         }
 
         function lockZone() {
-            localStorage.removeItem("sec_access");
-            document.getElementById("restricted-zone").classList.add("hidden");
-            document.getElementById("accessCodeInput").value = "";
+            try {
+                localStorage.removeItem("sec_access");
+            } catch(e) {}
+            const restrictedZone = document.getElementById("restricted-zone");
+            const accessInput = document.getElementById("accessCodeInput");
+            if (restrictedZone) restrictedZone.classList.add("hidden");
+            if (accessInput) accessInput.value = "";
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function adminAddProduct() {
-            const zone = document.getElementById("adm-zone").value;
-            const name = document.getElementById("adm-name").value.trim();
-            const price = document.getElementById("adm-price").value.trim();
-            const desc = document.getElementById("adm-desc").value.trim();
+            const zoneEl = document.getElementById("adm-zone");
+            const nameEl = document.getElementById("adm-name");
+            const priceEl = document.getElementById("adm-price");
+            const descEl = document.getElementById("adm-desc");
+
+            if (!zoneEl || !nameEl || !priceEl) return;
+
+            const zone = zoneEl.value;
+            const name = nameEl.value.trim();
+            const price = priceEl.value.trim();
+            const desc = descEl ? descEl.value.trim() : "";
 
             if (!name || !price) {
                 alert("Uzupełnij nazwę i cenę!");
@@ -355,54 +495,58 @@
             const item = { id: Date.now(), name, price, desc };
             if (zone === "white") {
                 whiteProducts.push(item);
-                localStorage.setItem("white_products", JSON.stringify(whiteProducts));
+                try { localStorage.setItem("white_products", JSON.stringify(whiteProducts)); } catch(e) {}
             } else {
                 blackProducts.push(item);
-                localStorage.setItem("black_products", JSON.stringify(blackProducts));
+                try { localStorage.setItem("black_products", JSON.stringify(blackProducts)); } catch(e) {}
             }
             renderDynamicProducts();
-            document.getElementById("adm-name").value = "";
-            document.getElementById("adm-price").value = "";
-            document.getElementById("adm-desc").value = "";
+            nameEl.value = "";
+            priceEl.value = "";
+            if (descEl) descEl.value = "";
         }
 
         function adminAddCode() {
-            const code = document.getElementById("adm-new-code").value.trim();
+            const codeEl = document.getElementById("adm-new-code");
+            if (!codeEl) return;
+            const code = codeEl.value.trim();
             if (!code) return;
             if (!validCodes.includes(code)) {
                 validCodes.push(code);
-                localStorage.setItem("valid_codes", JSON.stringify(validCodes));
-                document.getElementById("adm-new-code").value = "";
+                try {
+                    localStorage.setItem("valid_codes", JSON.stringify(validCodes));
+                } catch(e) {}
+                codeEl.value = "";
                 alert("Klucz został dodany.");
             }
         }
 
         function renderDynamicProducts() {
             const whiteList = document.getElementById("white-zone-list");
-            if (!whiteList) return;
-            
-            let whiteHtml = "";
-            
-            defaultWhiteProducts.forEach(p => {
-                whiteHtml += `
-                <div class="product-card">
-                    <h3 style="font-size: 12px; margin: 0 0 4px 0;">${p.name}</h3>
-                    <p class="price">${p.price}</p>
-                    <p class="calc-note" style="margin: 4px 0; font-size:10px; color:#8892b0;">${p.desc}</p>
-                    <button type="button" onclick="orderProduct('${p.name.replace(/'/g, "\\'")}', '${p.price}')">Kup / Zamów</button>
-                </div>`;
-            });
+            if (whiteList) {
+                let whiteHtml = "";
+                
+                defaultWhiteProducts.forEach(p => {
+                    whiteHtml += `
+                    <div class="product-card">
+                        <h3 style="font-size: 12px; margin: 0 0 4px 0; color: var(--text-main);">${p.name}</h3>
+                        <p class="price">${p.price}</p>
+                        <p class="calc-note" style="margin: 4px 0; font-size:11px; color:var(--text-muted);">${p.desc}</p>
+                        <button type="button" onclick="orderProduct('${p.name.replace(/'/g, "\\'")}', '${p.price}')" style="margin-top: 6px;">Kup / Zamów</button>
+                    </div>`;
+                });
 
-            whiteProducts.forEach(p => {
-                whiteHtml += `
-                <div class="product-card">
-                    <h3 style="font-size: 12px; margin: 0 0 4px 0;">${p.name}</h3>
-                    <p class="price">${p.price} PLN</p>
-                    <p class="calc-note" style="margin: 4px 0; font-size:10px; color:#8892b0;">${p.desc || ''}</p>
-                    <button type="button" onclick="orderProduct('${p.name.replace(/'/g, "\\'")}', '${p.price} PLN')">Kup / Zamów</button>
-                </div>`;
-            });
-            whiteList.innerHTML = whiteHtml;
+                whiteProducts.forEach(p => {
+                    whiteHtml += `
+                    <div class="product-card">
+                        <h3 style="font-size: 12px; margin: 0 0 4px 0; color: var(--text-main);">${p.name}</h3>
+                        <p class="price">${p.price} PLN</p>
+                        <p class="calc-note" style="margin: 4px 0; font-size:11px; color:var(--text-muted);">${p.desc || ''}</p>
+                        <button type="button" onclick="orderProduct('${p.name.replace(/'/g, "\\'")}', '${p.price} PLN')" style="margin-top: 6px;">Kup / Zamów</button>
+                    </div>`;
+                });
+                whiteList.innerHTML = whiteHtml;
+            }
 
             const blackContainer = document.getElementById("black-zone-dynamic");
             if (blackContainer) {
@@ -410,10 +554,10 @@
                 blackProducts.forEach(p => {
                     blackHtml += `
                     <div class="product-card">
-                        <h3 style="font-size: 12px; margin: 0 0 4px 0;">${p.name}</h3>
+                        <h3 style="font-size: 12px; margin: 0 0 4px 0; color: var(--text-main);">${p.name}</h3>
                         <p class="price">${p.price} PLN</p>
-                        <p style="font-size: 9px; color: #8892b0; margin: 0 0 6px 0;">${p.desc || ''}</p>
-                        <button type="button" onclick="orderProduct('${p.name.replace(/'/g, "\\'")}', '${p.price} PLN (${_s.t1})')">Zamów</button>
+                        <p style="font-size: 10px; color: var(--text-muted); margin: 0 0 6px 0;">${p.desc || ''}</p>
+                        <button type="button" onclick="orderProduct('${p.name.replace(/'/g, "\\'")}', '${p.price} PLN (${_s.t1})')" style="margin-top: 6px;">Zamów</button>
                     </div>`;
                 });
                 blackContainer.innerHTML = blackHtml;
@@ -429,32 +573,39 @@
                 all.forEach(p => {
                     managerHtml += `
                     <div class="admin-item-row" id="row-${p.id}">
-                        <div style="margin-bottom: 4px;">
-                            <input type="text" id="edit-name-${p.id}" value="${p.name.replace(/"/g, '&quot;')}" style="margin-bottom: 2px; padding: 4px; font-size: 10px;">
-                            <div style="display: flex; gap: 4px;">
-                                <input type="text" id="edit-price-${p.id}" value="${p.price}" placeholder="Cena" style="width: 40%; padding: 4px; font-size: 10px;">
-                                <input type="text" id="edit-desc-${p.id}" value="${p.desc ? p.desc.replace(/"/g, '&quot;') : ''}" placeholder="Opis" style="width: 60%; padding: 4px; font-size: 10px;">
+                        <div style="margin-bottom: 6px;">
+                            <input type="text" id="edit-name-${p.id}" value="${p.name.replace(/"/g, '&quot;')}" style="margin-bottom: 4px; padding: 6px; font-size: 11px;">
+                            <div style="display: flex; gap: 6px;">
+                                <input type="text" id="edit-price-${p.id}" value="${p.price}" placeholder="Cena" style="width: 40%; padding: 6px; font-size: 11px;">
+                                <input type="text" id="edit-desc-${p.id}" value="${p.desc ? p.desc.replace(/"/g, '&quot;') : ''}" placeholder="Opis" style="width: 60%; padding: 6px; font-size: 11px;">
                             </div>
                         </div>
-                        <div style="display: flex; gap: 4px; align-items: center;">
-                            <select id="edit-zone-${p.id}" style="background: #0b0c10; border: 1px solid #45a29e; color: #fff; padding: 2px; font-size: 9px; width: 35%;">
+                        <div style="display: flex; gap: 6px; align-items: center;">
+                            <select id="edit-zone-${p.id}" style="background: var(--bg-color); border: 1px solid var(--border-color); color: #fff; padding: 6px; font-size: 10px; width: 38%; margin-bottom:0;">
                                 <option value="white" ${p.zone === 'white' ? 'selected' : ''}>Katalog Główny</option>
                                 <option value="black" ${p.zone === 'black' ? 'selected' : ''}>${_s.t1}</option>
                             </select>
-                            <button type="button" onclick="saveProduct(${p.id})" style="font-size:9px; padding:4px; background:#45a29e; color:#0b0c10; border:none; width: 32%; margin:0;">Zapisz</button>
-                            <button type="button" onclick="deleteProduct(${p.id}, '${p.zone}')" style="font-size:9px; padding:4px; background:#ff4757; color:#0b0c10; border:none; width: 28%; margin:0;">Usuń</button>
+                            <button type="button" onclick="saveProduct(${p.id})" style="font-size:10px; padding:6px; background:var(--border-color); color:var(--bg-color); border:none; width: 34%; margin:0;">Zapisz</button>
+                            <button type="button" onclick="deleteProduct(${p.id}, '${p.zone}')" style="font-size:10px; padding:6px; background:var(--accent-red); color:var(--bg-color); border:none; width: 28%; margin:0;">Usuń</button>
                         </div>
                     </div>`;
                 });
-                adminManager.innerHTML = managerHtml || '<span style="font-size:9px; color:#8892b0;">Brak dodatkowych pozycji.</span>';
+                adminManager.innerHTML = managerHtml || '<span style="font-size:10px; color:var(--text-muted);">Brak dodatkowych pozycji.</span>';
             }
         }
 
         function saveProduct(id) {
-            const newName = document.getElementById(`edit-name-${id}`).value.trim();
-            const newPrice = document.getElementById(`edit-price-${id}`).value.trim();
-            const newDesc = document.getElementById(`edit-desc-${id}`).value.trim();
-            const newZone = document.getElementById(`edit-zone-${id}`).value;
+            const nameEl = document.getElementById(`edit-name-${id}`);
+            const priceEl = document.getElementById(`edit-price-${id}`);
+            const descEl = document.getElementById(`edit-desc-${id}`);
+            const zoneEl = document.getElementById(`edit-zone-${id}`);
+
+            if (!nameEl || !priceEl || !zoneEl) return;
+
+            const newName = nameEl.value.trim();
+            const newPrice = priceEl.value.trim();
+            const newDesc = descEl ? descEl.value.trim() : "";
+            const newZone = zoneEl.value;
 
             if (!newName || !newPrice) {
                 alert("Uzupełnij nazwę i cenę!");
@@ -484,8 +635,11 @@
                 blackProducts.push(item);
             }
 
-            localStorage.setItem("white_products", JSON.stringify(whiteProducts));
-            localStorage.setItem("black_products", JSON.stringify(blackProducts));
+            try {
+                localStorage.setItem("white_products", JSON.stringify(whiteProducts));
+                localStorage.setItem("black_products", JSON.stringify(blackProducts));
+            } catch(e) {}
+            
             renderDynamicProducts();
             alert("Zaktualizowano pomyślnie.");
         }
@@ -493,10 +647,10 @@
         function deleteProduct(id, zone) {
             if (zone === 'white') {
                 whiteProducts = whiteProducts.filter(p => p.id !== id);
-                localStorage.setItem("white_products", JSON.stringify(whiteProducts));
+                try { localStorage.setItem("white_products", JSON.stringify(whiteProducts)); } catch(e) {}
             } else {
                 blackProducts = blackProducts.filter(p => p.id !== id);
-                localStorage.setItem("black_products", JSON.stringify(blackProducts));
+                try { localStorage.setItem("black_products", JSON.stringify(blackProducts)); } catch(e) {}
             }
             renderDynamicProducts();
         }
