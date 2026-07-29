@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -11,15 +12,15 @@
             color: #c5c6c7;
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
-            padding: 10px;
-            max-width: 100vw;
+            padding: 8px;
+            width: 100vw;
             overflow-x: hidden;
             -webkit-text-size-adjust: 100%;
         }
         .header {
             border-bottom: 2px dashed #45a29e;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
+            padding-bottom: 8px;
+            margin-bottom: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -27,27 +28,27 @@
         .header h1 {
             color: #66fcf1;
             margin: 0;
-            font-size: 18px;
+            font-size: 16px;
             letter-spacing: 1px;
         }
         .badge {
             background: #1f2833;
             color: #66fcf1;
-            padding: 4px 6px;
+            padding: 3px 5px;
             border: 1px solid #45a29e;
-            font-size: 9px;
+            font-size: 8px;
         }
         .panel {
             background: #1f2833;
             border: 1px solid #45a29e;
-            padding: 12px;
-            margin-bottom: 12px;
+            padding: 10px;
+            margin-bottom: 10px;
             border-radius: 4px;
             width: 100%;
         }
         .hidden { display: none !important; }
         .price { color: #66fcf1; font-weight: bold; }
-        .calc-note { font-size: 10px; color: #8892b0; margin-top: 3px; }
+        .calc-note { font-size: 9px; color: #8892b0; margin-top: 2px; }
         button {
             background: #0b0c10;
             color: #66fcf1;
@@ -60,59 +61,59 @@
             width: 100%;
             text-align: center;
             touch-action: manipulation;
-            margin-top: 8px;
-            font-size: 13px;
+            margin-top: 6px;
+            font-size: 12px;
         }
         button:active {
             background: #66fcf1;
             color: #0b0c10;
         }
-        ul { padding-left: 15px; margin: 5px 0; }
-        li { margin-bottom: 8px; line-height: 1.3; font-size: 12px; word-break: break-word; }
+        ul { padding-left: 12px; margin: 4px 0; }
+        li { margin-bottom: 6px; line-height: 1.2; font-size: 11px; word-break: break-word; }
         .login-box {
-            margin-top: 10px;
-            padding: 10px;
+            margin-top: 8px;
+            padding: 8px;
             background: #121820;
             border: 1px dashed #45a29e;
         }
         .product-card {
             background: #121820;
             border: 1px solid #283648;
-            padding: 10px;
-            margin-top: 10px;
+            padding: 8px;
+            margin-top: 8px;
             border-radius: 4px;
         }
         .crypto-box {
             background: #0b0c10;
             border: 1px solid #45a29e;
-            padding: 8px;
-            margin-top: 8px;
-            font-size: 9px;
+            padding: 6px;
+            margin-top: 6px;
+            font-size: 8px;
             word-break: break-all;
         }
         
-        /* RESPONSYWNY PANEL ADMINA - idealnie dopasowany do ekranu telefonu, pojawia się po kodzie */
+        /* PANEL ADMINA */
         #admin-menu {
             background: #121820;
             border: 2px solid #ff4757;
-            padding: 12px;
-            margin-bottom: 15px;
+            padding: 10px;
+            margin-bottom: 10px;
             width: 100%;
             border-radius: 4px;
         }
         #admin-menu h3 {
             color: #ff4757;
             margin-top: 0;
-            font-size: 12px;
+            font-size: 11px;
             border-bottom: 1px dashed #ff4757;
             padding-bottom: 4px;
         }
         .form-group {
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
         .form-group label {
             display: block;
-            font-size: 10px;
+            font-size: 9px;
             color: #8892b0;
             margin-bottom: 2px;
         }
@@ -123,14 +124,14 @@
             color: #fff;
             padding: 8px;
             font-family: monospace;
-            font-size: 14px; /* Chroni przed auto-zoomem na iPhone/Android */
+            font-size: 14px;
         }
         .admin-item-row {
             background: #0b0c10;
             border: 1px solid #283648;
             padding: 6px;
-            margin-top: 6px;
-            font-size: 10px;
+            margin-top: 4px;
+            font-size: 9px;
         }
         input[type="text"] {
             font-size: 14px;
@@ -145,40 +146,40 @@
     </div>
 
     <div class="panel hidden" id="banned-panel" style="border-color: #ff4757; background: rgba(255, 71, 87, 0.05);">
-        <h2 style="color: #ff4757; font-size: 15px;">ACCESS TERMINATED</h2>
-        <p style="font-size: 11px;">Zablokowano dostęp z powodu błędnych kodów.</p>
+        <h2 style="color: #ff4757; font-size: 14px;">ACCESS TERMINATED</h2>
+        <p style="font-size: 10px;">Zablokowano dostęp z powodu błędnych kodów.</p>
     </div>
 
     <!-- GŁÓWNA STRONA / BIAŁA STREFA -->
     <div class="panel" id="main-store">
-        <h2>Biała Strefa (Główna)</h2>
+        <h2 style="font-size: 13px; margin-top:0;">Biała Strefa (Główna)</h2>
         <ul id="white-zone-list">
             <li>Koszulka Standard (Napisy / Kościół Szatana w Pruszkowie) – <span class="price">70.00 PLN</span> <div class="calc-note">Wysyłka wliczona | Monero (XMR)</div></li>
         </ul>
         <div id="white-zone-dynamic"></div>
         
         <div class="login-box">
-            <p style="margin: 0 0 6px 0; font-size: 11px; color: #66fcf1;">Płatność XMR:</p>
-            <p style="font-size: 10px; color: #8892b0; margin-bottom: 6px;">Wyślij potwierdzenie na: <strong style="color: #66fcf1;">urbexowy_dil@proton.me</strong></p>
+            <p style="margin: 0 0 4px 0; font-size: 10px; color: #66fcf1;">Płatność XMR:</p>
+            <p style="font-size: 9px; color: #8892b0; margin-bottom: 4px;">Wyślij potwierdzenie na: <strong style="color: #66fcf1;">urbexowy_dil@proton.me</strong></p>
             <div class="crypto-box">45PNtVoWtr7DoJkZhxRWUY3i6ar7u47E95jwi5sqsDo5Ap2RWeq9x5SgxEXKfG9L1BMVKWCHsyxMEK76yqMYSnnsGM3J1Cr</div>
             <button type="button" onclick="alert('Wyślij potwierdzenie na: urbexowy_dil@proton.me')">Zaksięguj / Wyślij</button>
         </div>
 
         <div class="login-box" id="login-container">
-            <p style="margin: 0 0 6px 0; font-size: 11px; color: #66fcf1;">Strefa ukryta (Kod):</p>
-            <input type="text" id="accessCodeInput" placeholder="Wprowadź kod..." style="background: #0b0c10; border: 1px solid #45a29e; color: #fff; padding: 8px; width: 100%; margin-bottom: 6px;">
+            <p style="margin: 0 0 4px 0; font-size: 10px; color: #66fcf1;">Strefa ukryta (Kod):</p>
+            <input type="text" id="accessCodeInput" placeholder="Wprowadź kod...">
             <button type="button" id="verifyBtn">Zatwierdź kod</button>
-            <p style="font-size: 10px; color: #ff4757; margin-top: 6px;" id="attempts-warning">Pozostałe próby: 3</p>
+            <p style="font-size: 9px; color: #ff4757; margin-top: 4px;" id="attempts-warning">Pozostałe próby: 3</p>
         </div>
     </div>
 
-    <!-- CZARNA STREFA (POJAWIA SIĘ TYLKO PO POPRAWNYM KODZIE) -->
+    <!-- CZARNA STREFA (DOMYŚLNIE ZAWSZE UKRYTA) -->
     <div class="panel hidden" id="restricted-zone">
-        <h2>Czarna Strefa (Ukryta)</h2>
+        <h2 style="font-size: 13px; margin-top:0;">Czarna Strefa (Ukryta)</h2>
         
-        <!-- PANEL ADMINA - UKRYTY DOMYŚLNIE, POJAWIA SIĘ TUŻ POD NAGŁÓWKIEM STREFY PO AUTORYZACJI -->
+        <!-- PANEL ADMINA - UKRYTY DOMYŚLNIE -->
         <div id="admin-menu" class="hidden">
-            <h3>// ADMIN_PANEL (2921)</h3>
+            <h3>// ADMIN_PANEL</h3>
             
             <div class="form-group">
                 <label>Docelowa Strefa:</label>
@@ -205,11 +206,11 @@
 
             <button type="button" onclick="adminAddProduct()" style="border-color: #ff4757; color: #ff4757;">Dodaj Produkt</button>
 
-            <hr style="border: 0; border-top: 1px dashed #45a29e; margin: 10px 0;">
-            <p style="font-size: 10px; color: #66fcf1; margin: 0 0 4px 0;">Zarządzanie:</p>
+            <hr style="border: 0; border-top: 1px dashed #45a29e; margin: 8px 0;">
+            <p style="font-size: 9px; color: #66fcf1; margin: 0 0 2px 0;">Zarządzanie:</p>
             <div id="admin-products-manager"></div>
 
-            <hr style="border: 0; border-top: 1px dashed #45a29e; margin: 10px 0;">
+            <hr style="border: 0; border-top: 1px dashed #45a29e; margin: 8px 0;">
             
             <div class="form-group">
                 <label>Nowy kod dostępu:</label>
@@ -221,10 +222,10 @@
         <div id="black-zone-dynamic"></div>
 
         <div class="product-card">
-            <h3>Holenderski Skun - Nasiona Marihuany AK</h3>
-            <p style="font-size: 10px; color: #8892b0;">Oferta kolekcjonerska</p>
+            <h3 style="font-size: 12px; margin: 0 0 4px 0;">Holenderski Skun - Nasiona Marihuany AK</h3>
+            <p style="font-size: 9px; color: #8892b0; margin: 0 0 6px 0;">Oferta kolekcjonerska</p>
             
-            <div style="margin: 8px 0; text-align: center;">
+            <div style="margin: 6px 0; text-align: center;">
                 <img src="ak47_1421.jpg" alt="AK-47" style="max-width: 100%; height: auto; border: 1px solid #45a29e;">
             </div>
 
@@ -237,7 +238,7 @@
             <button type="button" onclick="alert('Zamówienie ze strefy ukrytej. Wyślij potwierdzenie na: urbexowy_dil@proton.me')">Zamów</button>
         </div>
 
-        <button type="button" onclick="lockZone()" style="background: #ff4757; color: #0b0c10; border: none; margin-top: 12px;">Zablokuj strefę</button>
+        <button type="button" onclick="lockZone()" style="background: #ff4757; color: #0b0c10; border: none; margin-top: 10px;">Zablokuj strefę</button>
     </div>
 
     <script>
@@ -248,14 +249,14 @@
         const maxAttempts = 3;
 
         window.addEventListener('DOMContentLoaded', () => {
+            // ZAWSZE CZYŚCIMY SESJĘ NA START - WYMAGAMY KODU NA NOWO
+            localStorage.removeItem("sec_access");
+
             if (localStorage.getItem("node_banned") === "true") {
                 triggerBanUI();
                 return;
             }
-            if (localStorage.getItem("sec_access") === "true") {
-                document.getElementById("restricted-zone").classList.remove("hidden");
-                document.getElementById("admin-menu").classList.remove("hidden");
-            }
+
             renderDynamicProducts();
             updateAttemptsDisplay();
 
@@ -284,6 +285,8 @@
                 localStorage.setItem("failed_attempts", "0");
                 document.getElementById("restricted-zone").classList.remove("hidden");
                 document.getElementById("admin-menu").classList.remove("hidden");
+                // Płynne przewinięcie do czarnej strefy po odblokowaniu
+                document.getElementById("restricted-zone").scrollIntoView({ behavior: 'smooth' });
             } else {
                 failedAttempts++;
                 localStorage.setItem("failed_attempts", failedAttempts);
@@ -362,9 +365,9 @@
             blackProducts.forEach(p => {
                 blackHtml += `
                 <div class="product-card">
-                    <h3>${p.name}</h3>
+                    <h3 style="font-size: 12px; margin: 0 0 4px 0;">${p.name}</h3>
                     <p class="price">${p.price}</p>
-                    <p style="font-size: 10px; color: #8892b0;">${p.desc || ''}</p>
+                    <p style="font-size: 9px; color: #8892b0; margin: 0 0 6px 0;">${p.desc || ''}</p>
                     <button type="button" onclick="alert('Zamówienie ze strefy ukrytej. Wyślij potwierdzenie na: urbexowy_dil@proton.me')">Zamów</button>
                 </div>`;
             });
@@ -382,7 +385,7 @@
                 <div class="admin-item-row">
                     <strong>${p.name}</strong>
                     <div style="margin-top: 4px; display: flex; gap: 4px;">
-                        <select onchange="moveProduct(${p.id}, this.value)" style="background: #0b0c10; border: 1px solid #45a29e; color: #fff; padding: 2px; font-size: 10px; width: 65%;">
+                        <select onchange="moveProduct(${p.id}, this.value)" style="background: #0b0c10; border: 1px solid #45a29e; color: #fff; padding: 2px; font-size: 9px; width: 65%;">
                             <option value="white" ${p.zone === 'white' ? 'selected' : ''}>Biała</option>
                             <option value="black" ${p.zone === 'black' ? 'selected' : ''}>Czarna</option>
                         </select>
@@ -390,7 +393,7 @@
                     </div>
                 </div>`;
             });
-            adminManager.innerHTML = managerHtml || '<span style="font-size:10px; color:#8892b0;">Brak produktów.</span>';
+            adminManager.innerHTML = managerHtml || '<span style="font-size:9px; color:#8892b0;">Brak produktów.</span>';
         }
 
         function moveProduct(id, targetZone) {
