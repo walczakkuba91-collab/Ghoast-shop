@@ -57,7 +57,7 @@
             color: #45a29e;
             font-weight: bold;
         }
-        input[type="text"], select {
+        input[type="text"], input[type="password"], select {
             background: #0b0c10;
             border: 1px solid #45a29e;
             color: #66fcf1;
@@ -123,7 +123,8 @@
 
     <div id="banned-panel" class="section-box hidden" style="border-color: #ff4757;">
         <div class="section-title" style="color: #ff4757;">// DOSTĘP ZABLOKOWANY</div>
-        <p class="warning">Wykryto niedozowoloną aktywność lub przekroczono limit prób autoryzacji.</p>
+        <p class="warning">Wykryto niedozwoloną aktywność lub przekroczono limit prób autoryzacji.</p>
+        <button type="button" onclick="resetBan()" style="margin-top: 8px; border-color: #ff4757; color: #ff4757;">Zresetuj blokadę</button>
     </div>
 
     <div id="main-store">
@@ -133,7 +134,7 @@
         </div>
 
         <div class="section-box">
-            <div class="section-title">Przelew XMR:</div>
+            <div class="section-title">Płatność / Przelew XMR</div>
             <div class="form-group">
                 <label>Adres kontaktowy:</label>
                 <div id="contact-email-container" style="color: #66fcf1; font-weight: bold; margin-bottom: 6px; word-break: break-all;">[Ładowanie...]</div>
@@ -146,8 +147,8 @@
         </div>
 
         <div class="section-box">
-            <div class="section-title">Portfel / Węzeł:</div>
-            <input type="password" id="accessCodeInput" placeholder="...">
+            <div class="section-title">Strefa Autoryzacji (Węzeł)</div>
+            <input type="password" id="accessCodeInput" placeholder="Wprowadź klucz...">
             <button type="button" id="verifyBtn">Wykonaj</button>
             <div id="attempts-warning" class="warning" style="margin-top: 6px;"></div>
         </div>
@@ -158,7 +159,12 @@
     </div>
 
     <script>
-        // Zaawansowany moduł dekodujący (XOR + Base64 z rotacją)
+        // Automatyczne czyszczenie błędnych banów z poprzednich wersji
+        if (localStorage.getItem("failed_attempts") > 2) {
+            localStorage.setItem("failed_attempts", "0");
+        }
+        localStorage.removeItem("node_banned");
+
         const _secLayer = {
             d: function(b64, key) {
                 try {
@@ -167,7 +173,7 @@
                     for (let i = 0; i < raw.length; i++) {
                         res += String.fromCharCode(raw.charCodeAt(i) ^ key.charCodeAt(i % key.length));
                     }
-                    return atob(res); // Podwójne kodowanie dla ukrycia stringów przed skanerami
+                    return atob(res);
                 } catch(e) {
                     return "";
                 }
@@ -175,30 +181,15 @@
             sk: "gh_secure_salt_2026"
         };
 
-        // Zakodowane dane wrażliwe (chronione przed prostym wyciągnięciem przez grep/boty)
         const _s = {
-            k1: _secLayer.d("T0RFeU9ESTBOVEE9", _secLayer.sk), // Klucz użytkownika 1
-            k2: _secLayer.d("T0RNeU5UQTJOVGc9", _secLayer.sk), // Klucz administratora
-            t1: _secLayer.d("TURFeU1EQXlOVFk9", _secLayer.sk), // "Podsystem B"
-            t2: _secLayer.d("TVRJeU5UTTFOUT09", _secLayer.sk), // "Pakiet Kolekcjonerski AK"
-            t3: _secLayer.d("TVRRMU9EWXhOVGM9", _secLayer.sk), // "Specyfikacja archiwalna"
-            m:  _secLayer.d("TURVMU5UTTROVEl5", _secLayer.sk), // "urbexow_dil@proton.me"
-            xmr:_secLayer.d("TlRNMU1EWTFORE01TkRVM01qa3lPVGN4TmpVNE5EZzVNVE5qTVRNNE1qUTBOVEl6TlRrNU1qa3pOakU1TlRjMU9UQTROek0xTXpjek9USTFOVEV3TWpVME56UTNNemt3TVRRM01URTBNVEky", _secLayer.sk) // Adres XMR
+            k1: _secLayer.d("T0RFeU9ESTBOVEE9", _secLayer.sk), 
+            k2: _secLayer.d("T0RNeU5UQTJOVGc9", _secLayer.sk), 
+            t1: "Podsystem Kolekcjonerski", 
+            t2: "Pakiet Specjalny AK", 
+            t3: "Specyfikacja archiwalna i parametry", 
+            m:  _secLayer.d("TURVMU5UTTROVEl5", _secLayer.sk), 
+            xmr:_secLayer.d("TlRNMU1EWTFORE01TkRVM01qa3lPVGN4TmpVNE5EZzVNVE5qTVRNNE1qUTBOVEl6TlRrNU1qa3pOakU1TlRjMU9UQTROek0xTXpjek9USTFOVEV3TWpVME56UTNNemt3TVRRM01URTBNVEky", _secLayer.sk)
         };
-
-        // Zabezpieczenie przed środowiskami analitycznymi i automatycznymi skanerami
-        (function() {
-            if (navigator.webdriver || window._phantom || window.__nightmare || window.callPhantom) {
-                localStorage.setItem("node_banned", "true");
-            }
-            setTimeout(() => {
-                const botField = document.getElementById('bot-check-field');
-                if (botField && botField.value !== "") {
-                    localStorage.setItem("node_banned", "true");
-                    location.reload();
-                }
-            }, 800);
-        })();
 
         let validCodes = JSON.parse(localStorage.getItem("valid_codes") || JSON.stringify([_s.k1, _s.k2]));
         let whiteProducts = JSON.parse(localStorage.getItem("white_products") || '[]');
@@ -220,12 +211,6 @@
         window.addEventListener('DOMContentLoaded', () => {
             localStorage.removeItem("sec_access");
 
-            if (localStorage.getItem("node_banned") === "true") {
-                triggerBanUI();
-                return;
-            }
-
-            // Iniekcja odszyfrowanych danych kontaktowych
             document.getElementById("contact-email-container").innerText = _s.m;
             document.getElementById("xmr-address-container").innerText = _s.xmr;
 
@@ -253,25 +238,13 @@
             window.location.href = `mailto:${_s.m}?subject=${subject}&body=${body}`;
         }
 
-        function triggerBanUI() {
-            document.getElementById("main-store").style.display = "none";
-            document.getElementById("restricted-zone").classList.add("hidden");
-            document.getElementById("banned-panel").classList.remove("hidden");
-            document.getElementById("sys-status-badge").innerText = "SYS: ERR";
-            document.getElementById("sys-status-badge").style.borderColor = "#ff4757";
-            document.getElementById("sys-status-badge").style.color = "#ff4757";
+        function resetBan() {
+            localStorage.removeItem("node_banned");
+            localStorage.setItem("failed_attempts", "0");
+            location.reload();
         }
 
         function verifyAndUnlock() {
-            if (localStorage.getItem("node_banned") === "true") return;
-            
-            const botFieldVal = document.getElementById("bot-check-field").value;
-            if (botFieldVal !== "") {
-                localStorage.setItem("node_banned", "true");
-                triggerBanUI();
-                return;
-            }
-
             const val = document.getElementById("accessCodeInput").value.trim();
             
             if (val === _s.k1 || val === _s.k2 || validCodes.includes(val)) {
@@ -287,22 +260,23 @@
                 localStorage.setItem("failed_attempts", failedAttempts);
                 if (failedAttempts >= maxAttempts) {
                     localStorage.setItem("node_banned", "true");
-                    triggerBanUI();
+                    document.getElementById("main-store").style.display = "none";
+                    document.getElementById("banned-panel").classList.remove("hidden");
                 } else {
                     updateAttemptsDisplay();
-                    alert("Błędny klucz.");
+                    alert("Błędny klucz autoryzacji.");
                 }
             }
         }
 
         function buildRestrictedZone(isAdmin) {
             const container = document.getElementById("dynamic-zone-content");
-            let html = `<h2 style="font-size: 13px; margin-top:0;">${_s.t1}</h2>`;
+            let html = `<h2 style="font-size: 13px; margin-top:0;">// ${_s.t1}</h2>`;
 
             if (isAdmin) {
                 html += `
-                <div id="admin-menu">
-                    <h3>// ROOT_CTRL</h3>
+                <div id="admin-menu" style="border: 1px dashed #45a29e; padding: 6px; margin-bottom: 8px;">
+                    <h3 style="margin: 0 0 6px 0; font-size: 11px;">// PANEL ADMINISTRATORA (ROOT)</h3>
                     <div class="form-group">
                         <label>Katalog docelowy:</label>
                         <select id="adm-zone">
@@ -311,7 +285,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Nazwa:</label>
+                        <label>Nazwa pozycji:</label>
                         <input type="text" id="adm-name" placeholder="Nazwa">
                     </div>
                     <div class="form-group">
@@ -319,16 +293,16 @@
                         <input type="text" id="adm-price" placeholder="Cena">
                     </div>
                     <div class="form-group">
-                        <label>Parametry:</label>
+                        <label>Opis / Parametry:</label>
                         <input type="text" id="adm-desc" placeholder="Opis">
                     </div>
-                    <button type="button" onclick="adminAddProduct()" style="border-color: #ff4757; color: #ff4757;">Dodaj Pozycję</button>
+                    <button type="button" onclick="adminAddProduct()" style="border-color: #ff4757; color: #ff4757; margin-bottom: 6px;">Dodaj Pozycję</button>
                     <hr style="border: 0; border-top: 1px dashed #45a29e; margin: 8px 0;">
-                    <p style="font-size: 9px; color: #66fcf1; margin: 0 0 2px 0;">Menedżer zasobów:</p>
+                    <p style="font-size: 9px; color: #66fcf1; margin: 0 0 4px 0;">Zarządzanie zasobami:</p>
                     <div id="admin-products-manager"></div>
                     <hr style="border: 0; border-top: 1px dashed #45a29e; margin: 8px 0;">
                     <div class="form-group">
-                        <label>Nowy klucz:</label>
+                        <label>Nowy klucz dostępu:</label>
                         <input type="text" id="adm-new-code" placeholder="Klucz">
                     </div>
                     <button type="button" onclick="adminAddCode()">Dodaj Klucz</button>
@@ -352,7 +326,7 @@
                 </ul>
                 <button type="button" onclick="orderProduct('${_s.t2}', 'Od 27.50 PLN (${_s.t1})')">Zamów pakiet</button>
             </div>
-            <button type="button" onclick="lockZone()" style="background: #ff4757; color: #0b0c10; border: none; margin-top: 10px;">Rozłącz sesję</button>`;
+            <button type="button" onclick="lockZone()" style="background: #ff4757; color: #0b0c10; border: none; margin-top: 10px;">Zamknij strefę</button>`;
 
             container.innerHTML = html;
             renderDynamicProducts();
@@ -379,7 +353,7 @@
             const desc = document.getElementById("adm-desc").value.trim();
 
             if (!name || !price) {
-                alert("Wypełnij wymagane pola!");
+                alert("Uzupełnij nazwę i cenę!");
                 return;
             }
 
@@ -404,7 +378,7 @@
                 validCodes.push(code);
                 localStorage.setItem("valid_codes", JSON.stringify(validCodes));
                 document.getElementById("adm-new-code").value = "";
-                alert("Klucz dodany.");
+                alert("Klucz został dodany.");
             }
         }
 
@@ -477,7 +451,7 @@
                         </div>
                     </div>`;
                 });
-                adminManager.innerHTML = managerHtml || '<span style="font-size:9px; color:#8892b0;">Brak dynamicznych zasobów.</span>';
+                adminManager.innerHTML = managerHtml || '<span style="font-size:9px; color:#8892b0;">Brak dodatkowych pozycji.</span>';
             }
         }
 
@@ -534,5 +508,3 @@
     </script>
 </body>
 </html>
-
-           
