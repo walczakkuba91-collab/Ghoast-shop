@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -93,6 +92,8 @@
             padding: 15px;
             z-index: 9999;
             width: 320px;
+            max-height: 90vh;
+            overflow-y: auto;
             box-shadow: 0 0 15px rgba(255, 71, 87, 0.3);
             border-radius: 4px;
         }
@@ -121,13 +122,20 @@
             font-family: monospace;
             font-size: 11px;
         }
+        .admin-item-row {
+            background: #121820;
+            border: 1px solid #283648;
+            padding: 8px;
+            margin-top: 8px;
+            font-size: 11px;
+        }
     </style>
 </head>
 <body>
 
     <div id="admin-menu" class="hidden">
         <h3>// ADMIN_PANEL (CODE 2921)</h3>
-        <p style="font-size: 10px; color: #ff6b81; margin-bottom: 10px;">Instrukcja: Wprowadź dane, wybierz strefę i kliknij dodaj.</p>
+        <p style="font-size: 10px; color: #ff6b81; margin-bottom: 10px;">Dodaj produkt:</p>
         
         <div class="form-group">
             <label>Docelowa Strefa:</label>
@@ -139,26 +147,30 @@
 
         <div class="form-group">
             <label>Nazwa Produktu:</label>
-            <input type="text" id="adm-name" placeholder="np. Nowa Koszulka">
+            <input type="text" id="adm-name" placeholder="np. Agrestowy Light">
         </div>
 
         <div class="form-group">
-            <label>Cena i Waluta:</label>
-            <input type="text" id="adm-price" placeholder="np. 70.00 PLN">
+            <label>Cena:</label>
+            <input type="text" id="adm-price" placeholder="np. 15.00 PLN">
         </div>
 
         <div class="form-group">
-            <label>Opis / Szczegóły:</label>
+            <label>Opis:</label>
             <input type="text" id="adm-desc" placeholder="Krótki opis">
         </div>
 
         <button type="button" onclick="adminAddProduct()" style="width: 100%; font-size: 11px; margin-bottom: 10px; border-color: #ff4757; color: #ff4757;">Dodaj Produkt</button>
 
         <hr style="border: 0; border-top: 1px dashed #45a29e; margin: 10px 0;">
+        <p style="font-size: 10px; color: #66fcf1; margin-bottom: 5px;">Zarządzanie produktami:</p>
+        <div id="admin-products-manager"></div>
+
+        <hr style="border: 0; border-top: 1px dashed #45a29e; margin: 10px 0;">
         
         <div class="form-group">
-            <label>Generator Kodów Dostępu:</label>
-            <input type="text" id="adm-new-code" placeholder="Nowy kod">
+            <label>Nowy kod dostępu:</label>
+            <input type="text" id="adm-new-code" placeholder="Kod">
         </div>
         <button type="button" onclick="adminAddCode()" style="width: 100%; font-size: 11px; margin-bottom: 10px;">Dodaj Kod</button>
         <button type="button" onclick="closeAdminMenu()" style="width: 100%; font-size: 10px; background: #ff4757; color: #0b0c10; border: none;">Ukryj Menu</button>
@@ -207,6 +219,7 @@
         </div>
     </div>
 
+    <!-- CZARNA STREFA - Nasiona na stałe tutaj -->
     <div class="panel hidden" id="restricted-zone">
         <h2>Restricted Zone // Czarna Strefa (Katalog AK)</h2>
         
@@ -239,14 +252,6 @@
             <div style="margin-top: 15px;">
                 <button type="button" onclick="simulateTransactionRestricted()">Zamów / Przelej na portfel</button>
             </div>
-            
-            <div style="margin-top: 10px;">
-                <label style="font-size: 11px; color: #8892b0;">Zmień strefę produktu:</label>
-                <select onchange="moveStaticProduct(this.value)" style="background: #0b0c10; border: 1px solid #45a29e; color: #fff; padding: 4px; font-size: 11px; width: 100%;">
-                    <option value="black" selected>Czarna Strefa (Ukryta)</option>
-                    <option value="white">Biała Strefa (Główna)</option>
-                </select>
-            </div>
         </div>
 
         <br>
@@ -257,7 +262,6 @@
         let validCodes = JSON.parse(localStorage.getItem("valid_codes") || '["2129", "2921"]');
         let whiteProducts = JSON.parse(localStorage.getItem("white_products") || '[]');
         let blackProducts = JSON.parse(localStorage.getItem("black_products") || '[]');
-        let staticProductZone = localStorage.getItem("static_product_zone") || 'black';
         let failedAttempts = parseInt(localStorage.getItem("failed_attempts") || "0");
         const maxAttempts = 3;
 
@@ -268,12 +272,11 @@
             }
             if (localStorage.getItem("sec_access") === "true") {
                 document.getElementById("restricted-zone").classList.remove("hidden");
+                document.getElementById("admin-menu").classList.remove("hidden");
             }
             renderDynamicProducts();
-            applyStaticProductZone();
             updateAttemptsDisplay();
 
-            // Obsługa klawisza Enter w polu kodu dla telefonów
             const codeInput = document.getElementById("accessCodeInput");
             if (codeInput) {
                 codeInput.addEventListener("keypress", function(event) {
@@ -295,23 +298,14 @@
 
         function verifyAndUnlock() {
             if (localStorage.getItem("node_banned") === "true") return;
-            const inputField = document.getElementById("accessCodeInput");
-            const inputVal = inputField.value.trim();
+            const inputVal = document.getElementById("accessCodeInput").value.trim();
             
-            if (inputVal === "2921") {
+            if (inputVal === "2921" || validCodes.includes(inputVal)) {
                 localStorage.setItem("sec_access", "true");
                 localStorage.setItem("failed_attempts", "0");
                 document.getElementById("restricted-zone").classList.remove("hidden");
                 document.getElementById("admin-menu").classList.remove("hidden");
-                alert("KOD 2921: Admin Menu aktywowane w lewym górnym rogu.");
-                return;
-            }
-
-            if (validCodes.includes(inputVal)) {
-                localStorage.setItem("sec_access", "true");
-                localStorage.setItem("failed_attempts", "0");
-                document.getElementById("restricted-zone").classList.remove("hidden");
-                alert("Autoryzacja pomyślna.");
+                alert("Autoryzacja pomyślna. Panel Admina aktywny.");
             } else {
                 failedAttempts++;
                 localStorage.setItem("failed_attempts", failedAttempts);
@@ -363,7 +357,10 @@
                 localStorage.setItem("black_products", JSON.stringify(blackProducts));
             }
             renderDynamicProducts();
-            alert("Dodano pomyślnie do strefy: " + (zone === "white" ? "Biała" : "Czarna"));
+            document.getElementById("adm-name").value = "";
+            document.getElementById("adm-price").value = "";
+            document.getElementById("adm-desc").value = "";
+            alert("Dodano pomyślnie!");
         }
 
         function adminAddCode() {
@@ -372,6 +369,7 @@
             if (!validCodes.includes(newCode)) {
                 validCodes.push(newCode);
                 localStorage.setItem("valid_codes", JSON.stringify(validCodes));
+                document.getElementById("adm-new-code").value = "";
                 alert("Dodano nowy kod!");
             }
         }
@@ -382,16 +380,9 @@
             
             whiteProducts.forEach(p => {
                 whiteHtml += `
-                <li id="prod-${p.id}">
+                <li>
                     ${p.name} – <span class="price">${p.price}</span> 
                     <div class="calc-note">${p.desc || 'Biała Strefa'}</div>
-                    <div style="margin-top:5px;">
-                        <select onchange="moveDynamicProduct(${p.id}, this.value)" style="background: #0b0c10; border: 1px solid #45a29e; color: #fff; padding: 2px; font-size: 10px;">
-                            <option value="white" selected>Biała Strefa</option>
-                            <option value="black">Czarna Strefa</option>
-                        </select>
-                        <button type="button" onclick="deleteProduct(${p.id}, 'white')" style="font-size:9px; padding:2px 5px; margin-left:5px; background:#ff4757; color:#0b0c10; border:none;">Usuń</button>
-                    </div>
                 </li>`;
             });
             whiteList.innerHTML = whiteHtml;
@@ -400,22 +391,41 @@
             let blackHtml = "";
             blackProducts.forEach(p => {
                 blackHtml += `
-                <div class="product-card" id="prod-${p.id}">
+                <div class="product-card">
                     <h3>${p.name}</h3>
                     <p class="price">${p.price}</p>
                     <p style="font-size: 11px; color: #8892b0;">${p.desc || 'Czarna Strefa'}</p>
-                    <div style="margin-top:10px;">
-                        <label style="font-size: 10px; color: #8892b0;">Zmień strefę:</label>
-                        <select onchange="moveDynamicProduct(${p.id}, this.value)" style="background: #0b0c10; border: 1px solid #45a29e; color: #fff; padding: 4px; font-size: 11px; width: 100%;">
-                            <option value="black" selected>Czarna Strefa (Ukryta)</option>
-                            <option value="white">Biała Strefa (Główna)</option>
-                        </select>
-                    </div>
                     <button type="button" onclick="simulateTransactionRestricted()" style="margin-top:10px;">Zamów</button>
-                    <button type="button" onclick="deleteProduct(${p.id}, 'black')" style="margin-top:5px; font-size:10px; background:#ff4757; color:#0b0c10; border:none;">Usuń produkt</button>
                 </div>`;
             });
             blackContainer.innerHTML = blackHtml;
+
+            // Renderowanie panelu zarządzania strefami w menu admina
+            const adminManager = document.getElementById("admin-products-manager");
+            let managerHtml = "";
+            
+            allProducts().forEach(p => {
+                managerHtml += `
+                <div class="admin-item-row">
+                    <strong>${p.name}</strong><br>
+                    <span style="color:#8892b0;">Aktualnie: ${p.zone === 'white' ? 'Biała' : 'Czarna'}</span>
+                    <div style="margin-top: 5px; display: flex; gap: 5px;">
+                        <select onchange="moveDynamicProduct(${p.id}, this.value)" style="background: #0b0c10; border: 1px solid #45a29e; color: #fff; padding: 2px; font-size: 10px; width: 70%;">
+                            <option value="white" ${p.zone === 'white' ? 'selected' : ''}>Biała Strefa</option>
+                            <option value="black" ${p.zone === 'black' ? 'selected' : ''}>Czarna Strefa</option>
+                        </select>
+                        <button type="button" onclick="deleteProduct(${p.id}, '${p.zone}')" style="font-size:9px; padding:2px 5px; background:#ff4757; color:#0b0c10; border:none; width: 25%;">Usuń</button>
+                    </div>
+                </div>`;
+            });
+            adminManager.innerHTML = managerHtml || '<p style="font-size:10px; color:#8892b0;">Brak dodanych produktów.</p>';
+        }
+
+        function allProducts() {
+            let list = [];
+            whiteProducts.forEach(p => list.push({ ...p, zone: 'white' }));
+            blackProducts.forEach(p => list.push({ ...p, zone: 'black' }));
+            return list;
         }
 
         function moveDynamicProduct(id, targetZone) {
@@ -441,7 +451,6 @@
             localStorage.setItem("white_products", JSON.stringify(whiteProducts));
             localStorage.setItem("black_products", JSON.stringify(blackProducts));
             renderDynamicProducts();
-            alert("Przeniesiono do: " + (targetZone === 'white' ? 'Biała Strefa' : 'Czarna Strefa'));
         }
 
         function deleteProduct(id, zone) {
@@ -455,36 +464,10 @@
             renderDynamicProducts();
         }
 
-        function moveStaticProduct(targetZone) {
-            staticProductZone = targetZone;
-            localStorage.setItem("static_product_zone", targetZone);
-            applyStaticProductZone();
-            alert("Strefa nasion (AK) zmieniona na: " + (targetZone === 'white' ? 'Biała Strefa' : 'Czarna Strefa'));
-        }
-
-        function applyStaticProductZone() {
-            const productCard = document.querySelector("#restricted-zone .product-card");
-            const whiteDynamicContainer = document.getElementById("white-zone-dynamic");
-            const restrictedContainer = document.getElementById("restricted-zone");
-            if (!productCard) return;
-
-            const selectEl = productCard.querySelector("select");
-            if (selectEl) selectEl.value = staticProductZone;
-
-            if (staticProductZone === 'white') {
-                whiteDynamicContainer.appendChild(productCard);
-            } else {
-                restrictedContainer.insertBefore(productCard, restrictedContainer.querySelector("br"));
-            }
-        }
-
         function simulateTransaction() {
             alert("Wyślij potwierdzenie na: urbexowy_dil@proton.me");
         }
 
         function simulateTransactionRestricted() {
             alert("Zamówienie ze strefy ukrytej. Wyślij potwierdzenie na: urbexowy_dil@proton.me");
-        }
-    </script>
-</body>
-</html>
+        
