@@ -157,7 +157,7 @@
             <p style="margin: 0 0 4px 0; font-size: 10px; color: #66fcf1;">Płatność XMR:</p>
             <p style="font-size: 9px; color: #8892b0; margin-bottom: 4px;">Wyślij potwierdzenie na: <strong style="color: #66fcf1;">urbexowy_dil@proton.me</strong></p>
             <div class="crypto-box">45PNtVoWtr7DoJkZhxRWUY3i6ar7u47E95jwi5sqsDo5Ap2RWeq9x5SgxEXKfG9L1BMVKWCHsyxMEK76yqMYSnnsGM3J1Cr</div>
-            <button type="button" onclick="alert('Wyślij potwierdzenie na: urbexowy_dil@proton.me')">Zaksięguj / Wyślij</button>
+            <button type="button" onclick="window.location.href='mailto:urbexowy_dil@proton.me?subject=Potwierdzenie%20platnosci%20XMR&body=Wklej%20tutaj%20hash%20transakcji:'">Zaksięguj / Wyślij</button>
         </div>
 
         <div class="login-box" id="login-container">
@@ -230,7 +230,7 @@
                 <li style="font-size: 11px; margin-bottom: 4px;">5+2 szt. – <span class="price">79.00 zł</span></li>
                 <li style="font-size: 11px; margin-bottom: 4px;">10+4 szt. – <span class="price">139.00 zł</span></li>
             </ul>
-            <button type="button" onclick="alert('Zamówienie ze strefy ukrytej. Wyślij potwierdzenie na: urbexowy_dil@proton.me')">Zamów</button>
+            <button type="button" onclick="orderProduct('Holenderski Skun - Nasiona Marihuany AK', 'Od 25.00 PLN (Strefa Ukryta)')">Zamów</button>
         </div>
 
         <button type="button" onclick="lockZone()" style="background: #ff4757; color: #0b0c10; border: none; margin-top: 10px;">Zablokuj strefę</button>
@@ -243,7 +243,6 @@
         let failedAttempts = parseInt(localStorage.getItem("failed_attempts") || "0");
         const maxAttempts = 3;
 
-        // Statyczne produkty w białej strefie jako karty z przyciskami zakupu
         const defaultWhiteProducts = [
             { name: "Koszulka Standard (Napisy / Kościół Szatana w Pruszkowie)", price: "70.00 PLN", desc: "Wysyłka wliczona | Monero (XMR)" },
             { name: "Autorski Trunek: Leśny Ród (Czarna Porzeczka & Mięta) [~12%]", price: "35.00 PLN", desc: "Butelka 0.5L | Fermentacja kontrolowana" },
@@ -274,6 +273,15 @@
                 }
             });
         });
+
+        // Uniwersalna funkcja generująca szablon e-maila zamówienia
+        function orderProduct(name, price) {
+            const subject = encodeURIComponent(`Zamówienie: ${name}`);
+            const body = encodeURIComponent(`Dzień dobry,\n\nChciałbym zamówić produkt:\n- Produkt: ${name}\n- Cena: ${price}\n\nPrzesyłam dane do wysyłki / potwierdzenie XMR:\n[Wpisz tutaj szczegóły]`);
+            
+            // Otwiera domyślnego klienta poczty z uzupełnionym szablonem
+            window.location.href = `mailto:urbexowy_dil@proton.me?subject=${subject}&body=${body}`;
+        }
 
         function triggerBanUI() {
             document.getElementById("main-store").style.display = "none";
@@ -360,44 +368,40 @@
             const whiteList = document.getElementById("white-zone-list");
             let whiteHtml = "";
             
-            // Renderowanie domyślnych produktów białej strefy w formie kart z przyciskami
             defaultWhiteProducts.forEach(p => {
                 whiteHtml += `
                 <div class="product-card">
                     <h3 style="font-size: 12px; margin: 0 0 4px 0;">${p.name}</h3>
                     <p class="price">${p.price}</p>
                     <p class="calc-note" style="margin: 4px 0;">${p.desc}</p>
-                    <button type="button" onclick="alert('Zamówienie (${p.name}). Wyślij potwierdzenie na: urbexowy_dil@proton.me')">Kup / Zamów</button>
+                    <button type="button" onclick="orderProduct('${p.name.replace(/'/g, "\\'")}', '${p.price}')">Kup / Zamów</button>
                 </div>`;
             });
 
-            // Renderowanie produktów dodanych dynamicznie do białej strefy przez admina
             whiteProducts.forEach(p => {
                 whiteHtml += `
                 <div class="product-card">
                     <h3 style="font-size: 12px; margin: 0 0 4px 0;">${p.name}</h3>
-                    <p class="price">${p.price}</p>
+                    <p class="price">${p.price} PLN</p>
                     <p class="calc-note" style="margin: 4px 0;">${p.desc || ''}</p>
-                    <button type="button" onclick="alert('Zamówienie (${p.name}). Wyślij potwierdzenie na: urbexowy_dil@proton.me')">Kup / Zamów</button>
+                    <button type="button" onclick="orderProduct('${p.name.replace(/'/g, "\\'")}', '${p.price} PLN')">Kup / Zamów</button>
                 </div>`;
             });
             whiteList.innerHTML = whiteHtml;
 
-            // Renderowanie czarnej strefy
             const blackContainer = document.getElementById("black-zone-dynamic");
             let blackHtml = "";
             blackProducts.forEach(p => {
                 blackHtml += `
                 <div class="product-card">
                     <h3 style="font-size: 12px; margin: 0 0 4px 0;">${p.name}</h3>
-                    <p class="price">${p.price}</p>
+                    <p class="price">${p.price} PLN</p>
                     <p style="font-size: 9px; color: #8892b0; margin: 0 0 6px 0;">${p.desc || ''}</p>
-                    <button type="button" onclick="alert('Zamówienie ze strefy ukrytej (${p.name}). Wyślij potwierdzenie na: urbexowy_dil@proton.me')">Zamów</button>
+                    <button type="button" onclick="orderProduct('${p.name.replace(/'/g, "\\'")}', '${p.price} PLN (Strefa Ukryta)')">Zamów</button>
                 </div>`;
             });
             blackContainer.innerHTML = blackHtml;
 
-            // Panel zarządzania produktami w adminie
             const adminManager = document.getElementById("admin-products-manager");
             let managerHtml = "";
             
