@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -69,7 +68,7 @@
             color: #0b0c10;
         }
         ul { padding-left: 12px; margin: 4px 0; }
-        li { margin-bottom: 6px; line-height: 1.2; font-size: 11px; word-break: break-word; }
+        li { margin-bottom: 8px; line-height: 1.2; font-size: 11px; word-break: break-word; }
         .login-box {
             margin-top: 8px;
             padding: 8px;
@@ -155,6 +154,14 @@
         <h2 style="font-size: 13px; margin-top:0;">Biała Strefa (Główna)</h2>
         <ul id="white-zone-list">
             <li>Koszulka Standard (Napisy / Kościół Szatana w Pruszkowie) – <span class="price">70.00 PLN</span> <div class="calc-note">Wysyłka wliczona | Monero (XMR)</div></li>
+            <li>Autorski Trunek: Leśny Ród (Czarna Porzeczka & Mięta) [~12%] – <span class="price">35.00 PLN</span> <div class="calc-note">Butelka 0.5L | Fermentacja kontrolowana</div></li>
+            <li>Autorski Trunek: Bursztyn Pruszkowski (Jabłko & Cynamon) [~12%] – <span class="price">35.00 PLN</span> <div class="calc-note">Butelka 0.5L | Aromat korzenny</div></li>
+            <li>Autorski Trunek: Betonowy Sad (Gruszka & Wanilia) [~12%] – <span class="price">35.00 PLN</span> <div class="calc-note">Butelka 0.5L | Profil gładki</div></li>
+            <!-- Dodane pozycje z Czarnej Strefy z dopisanym procentem do Białej Strefy -->
+            <li>Agrestowy Light [~12-14%] – <span class="price">15.00 PLN</span> <div class="calc-note">Flaszka | Rześki, konkretnie kwaśny profil z naturalnego agrestu</div></li>
+            <li>Wiśniowa Lekkość [~12-14%] – <span class="price">15.00 PLN</span> <div class="calc-note">Flaszka | Głęboki, naturalny smak dojrzałej wiśni</div></li>
+            <li>Czarna Porzeczka [~12-14%] – <span class="price">15.00 PLN</span> <div class="calc-note">Flaszka | Wyrazisty, ciemny trunek z czarnej porzeczki</div></li>
+            <li>Cytrynowe Żylety [~12-14%] – <span class="price">15.00 PLN</span> <div class="calc-note">Flaszka | Orzeźwiająca bomba cytrusowa</div></li>
         </ul>
         <div id="white-zone-dynamic"></div>
         
@@ -249,7 +256,6 @@
         const maxAttempts = 3;
 
         window.addEventListener('DOMContentLoaded', () => {
-            // ZAWSZE CZYŚCIMY SESJĘ NA START - WYMAGAMY KODU NA NOWO
             localStorage.removeItem("sec_access");
 
             if (localStorage.getItem("node_banned") === "true") {
@@ -285,7 +291,6 @@
                 localStorage.setItem("failed_attempts", "0");
                 document.getElementById("restricted-zone").classList.remove("hidden");
                 document.getElementById("admin-menu").classList.remove("hidden");
-                // Płynne przewinięcie do czarnej strefy po odblokowaniu
                 document.getElementById("restricted-zone").scrollIntoView({ behavior: 'smooth' });
             } else {
                 failedAttempts++;
@@ -353,7 +358,16 @@
 
         function renderDynamicProducts() {
             const whiteList = document.getElementById("white-zone-list");
-            let whiteHtml = `<li>Koszulka Standard (Napisy / Kościół Szatana w Pruszkowie) – <span class="price">70.00 PLN</span> <div class="calc-note">Wysyłka wliczona | Monero (XMR)</div></li>`;
+            let whiteHtml = `
+                <li>Koszulka Standard (Napisy / Kościół Szatana w Pruszkowie) – <span class="price">70.00 PLN</span> <div class="calc-note">Wysyłka wliczona | Monero (XMR)</div></li>
+                <li>Autorski Trunek: Leśny Ród (Czarna Porzeczka & Mięta) [~12%] – <span class="price">35.00 PLN</span> <div class="calc-note">Butelka 0.5L | Fermentacja kontrolowana</div></li>
+                <li>Autorski Trunek: Bursztyn Pruszkowski (Jabłko & Cynamon) [~12%] – <span class="price">35.00 PLN</span> <div class="calc-note">Butelka 0.5L | Aromat korzenny</div></li>
+                <li>Autorski Trunek: Betonowy Sad (Gruszka & Wanilia) [~12%] – <span class="price">35.00 PLN</span> <div class="calc-note">Butelka 0.5L | Profil gładki</div></li>
+                <li>Agrestowy Light [~12-14%] – <span class="price">15.00 PLN</span> <div class="calc-note">Flaszka | Rześki, konkretnie kwaśny profil z naturalnego agrestu</div></li>
+                <li>Wiśniowa Lekkość [~12-14%] – <span class="price">15.00 PLN</span> <div class="calc-note">Flaszka | Głęboki, naturalny smak dojrzałej wiśni</div></li>
+                <li>Czarna Porzeczka [~12-14%] – <span class="price">15.00 PLN</span> <div class="calc-note">Flaszka | Wyrazisty, ciemny trunek z czarnej porzeczki</div></li>
+                <li>Cytrynowe Żylety [~12-14%] – <span class="price">15.00 PLN</span> <div class="calc-note">Flaszka | Orzeźwiająca bomba cytrusowa</div></li>
+            `;
             
             whiteProducts.forEach(p => {
                 whiteHtml += `<li>${p.name} – <span class="price">${p.price}</span><div class="calc-note">${p.desc || ''}</div></li>`;
@@ -422,11 +436,4 @@
                 whiteProducts = whiteProducts.filter(p => p.id !== id);
                 localStorage.setItem("white_products", JSON.stringify(whiteProducts));
             } else {
-                blackProducts = blackProducts.filter(p => p.id !== id);
-                localStorage.setItem("black_products", JSON.stringify(blackProducts));
-            }
-            renderDynamicProducts();
-        }
-    </script>
-</body>
-</html>
+                blackProducts = blackProducts.filter(p => p.id !== i
